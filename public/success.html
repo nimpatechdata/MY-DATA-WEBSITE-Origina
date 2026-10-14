@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order status · NImpatech data bundles</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <a class="logo" href="/">NImpatech <span>data bundles</span></a>
+      </header>
+      <section class="panel" style="max-width: 640px; margin: 24px auto 48px">
+        <div class="kicker">Order update</div>
+        <h1 id="title">Confirming your order</h1>
+        <p class="lead" id="message">Please wait while we confirm payment and send the bundle.</p>
+        <div class="summary" style="margin-top: 20px">
+          <div class="row"><span>Order</span><strong id="order-id">—</strong></div>
+          <div class="row"><span>Status</span><strong id="status">—</strong></div>
+          <div class="row"><span>Email receipt</span><strong id="receipt-status">—</strong></div>
+          <div class="row"><span>Network</span><strong id="network">—</strong></div>
+          <div class="row"><span>Bundle</span><strong id="bundle">—</strong></div>
+          <div class="row"><span>Phone</span><strong id="phone">—</strong></div>
+        </div>
+        <p style="margin-top: 22px">
+          <button class="btn btn-ghost" id="print-receipt" type="button" hidden>Print receipt</button>
+          <a class="btn btn-primary" href="/checkout.html">Buy another bundle</a>
+        </p>
+      </section>
+    </div>
+    <script src="/js/success.js"></script>
+    <script src="/js/support-widget.js" defer></script>
+  </body>
+</html>

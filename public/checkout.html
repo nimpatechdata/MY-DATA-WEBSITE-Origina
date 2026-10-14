@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout · NImpatech data bundles</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <a class="logo" href="/">NImpatech <span>data bundles</span></a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/agents.html">Sub-agents</a>
+          <a href="/checkout.html">Checkout</a>
+        </nav>
+      </header>
+
+      <p class="kicker">Checkout</p>
+      <h1>Buy a data bundle</h1>
+      <p class="lead">Select MTN, Telecel or AirtelTigo, choose a size, and enter the phone number that should receive the data.</p>
+
+      <section class="checkout">
+        <form class="panel" id="checkout-form">
+          <label>Network</label>
+          <div class="choices" id="network-choices"></div>
+
+          <label>Bundle size</label>
+          <div class="choices" id="bundle-choices"></div>
+
+          <label for="phone">Ghana phone number</label>
+          <input id="phone" name="phone" inputmode="tel" placeholder="0241234567" maxlength="13" required />
+
+          <label for="email">Email for your purchase receipt <span>(optional)</span></label>
+          <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" />
+
+          <p class="error" id="error"></p>
+          <button class="primary" type="submit" id="pay-btn">Continue to payment</button>
+        </form>
+
+        <aside class="panel">
+          <h3>Order summary</h3>
+          <div class="summary" style="margin-top: 16px">
+            <div class="row"><span>Network</span><strong id="sum-network">—</strong></div>
+            <div class="row"><span>Bundle</span><strong id="sum-bundle">—</strong></div>
+            <div class="row"><span>Validity</span><strong id="sum-validity">—</strong></div>
+            <div class="row"><span>Phone</span><strong id="sum-phone">—</strong></div>
+            <div class="row"><span>Total</span><strong id="sum-total">GHS 0</strong></div>
+          </div>
+          <p class="lead" style="margin-top: 18px">
+            Without payment keys this uses demo mode. After you add Paystack and VTU keys, the same form starts a real payment.
+          </p>
+        </aside>
+      </section>
+
+      <footer>Your number is checked against MTN, Telecel and AirtelTigo prefixes.</footer>
+    </div>
+    <script src="/js/checkout.js"></script>
+    <script src="/js/support-widget.js" defer></script>
+  </body>
+</html>

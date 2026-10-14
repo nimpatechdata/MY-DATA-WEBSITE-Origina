@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2f4f7" />
+    <title>Agent store · NImpatech data bundles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/agents.css" />
+  </head>
+  <body class="dashboard-page agent-dashboard-page">
+    <header class="dashboard-header">
+      <div class="dashboard-header__inner">
+        <a class="dashboard-brand" href="/"><span>NImpatech</span><strong> data bundles</strong></a>
+        <nav class="dashboard-nav agent-dashboard-nav" aria-label="Agent navigation">
+          <a href="#agent-store">My store</a><a href="#agent-orders">Order tracker</a><a href="#agent-wallet">Profit wallet</a>
+        </nav>
+        <div class="header-actions"><span class="agent-name" id="agent-name-display">Agent</span><button class="agent-signout" id="agent-signout" type="button">Sign out</button></div>
+      </div>
+    </header>
+
+    <main class="dashboard-shell agent-dashboard-shell">
+      <section class="agent-dashboard-welcome">
+        <div><p class="agent-eyebrow">SUB-AGENT STORE</p><h1>Welcome, <span id="agent-greeting">Agent</span></h1><p>Set your price, take a customer order, and follow fulfillment here.</p></div>
+        <div class="agent-wallet-highlight"><span>Available profit</span><strong id="wallet-balance">GHS 0.00</strong><span class="wallet-note">Credited after successful delivery</span></div>
+      </section>
+
+      <section class="agent-dashboard-metrics" aria-label="Agent performance">
+        <article><span>Orders today</span><strong id="agent-orders-today">0</strong></article>
+        <article><span>Sales today</span><strong id="agent-sales-today">GHS 0.00</strong></article>
+        <article><span>Profit earned</span><strong id="agent-profit-today">GHS 0.00</strong></article>
+      </section>
+
+      <nav class="agent-view-tabs" aria-label="Agent workspace views">
+        <button class="is-active" type="button" data-view="store">My store</button>
+        <button type="button" data-view="orders">Order tracker</button>
+        <button type="button" data-view="transactions">Transactions</button>
+      </nav>
+
+      <section class="agent-view is-active" id="agent-store" data-panel="store">
+        <div class="agent-content-heading"><div><p class="agent-eyebrow">YOUR CATALOG</p><h2>Set prices &amp; sell bundles</h2></div><p>Base prices are set by NImpatech. Choose your customer price above each base.</p></div>
+        <div class="agent-network-tabs" id="agent-network-tabs" role="tablist" aria-label="Choose network"></div>
+        <div class="agent-product-grid" id="agent-product-grid"><p class="agent-loading">Loading your catalog…</p></div>
+      </section>
+
+      <section class="agent-view" id="agent-orders" data-panel="orders" hidden>
+        <div class="agent-content-heading"><div><p class="agent-eyebrow">FULFILLMENT</p><h2>Order tracker</h2></div><span class="agent-refresh-note">Statuses refresh when this page loads.</span></div>
+        <div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>Order</th><th>Bundle</th><th>Customer</th><th>Sale</th><th>Profit</th><th>Status</th><th>Date</th></tr></thead><tbody id="agent-orders-body"></tbody></table></div>
+        <p class="agent-empty" id="agent-orders-empty" hidden>No orders yet. Start a sale from your store.</p>
+      </section>
+
+      <section class="agent-view" id="agent-wallet" data-panel="transactions" hidden>
+        <div class="agent-content-heading"><div><p class="agent-eyebrow">WALLET HISTORY</p><h2>Profit transactions</h2></div><p>Margin is credited only after the bundle is delivered.</p></div>
+        <div class="agent-ledger-list" id="agent-ledger-list"></div>
+        <p class="agent-empty" id="agent-ledger-empty" hidden>No profit entries yet.</p>
+      </section>
+
+      <p class="agent-dashboard-message" id="agent-dashboard-message" role="status"></p>
+      <footer class="dashboard-footer">NImpatech data bundles <span>·</span> Agent workspace</footer>
+    </main>
+
+    <dialog class="sale-dialog" id="sale-dialog">
+      <form class="sale-dialog__card" id="agent-sale-form">
+        <button class="sale-dialog__close" type="button" id="sale-dialog-close" aria-label="Close">×</button>
+        <p class="agent-eyebrow">NEW CUSTOMER ORDER</p>
+        <h2 id="sale-title">Sell a data bundle</h2>
+        <div class="sale-price-summary"><span>Base price</span><strong id="sale-base-price">GHS 0.00</strong><span>Your profit on delivery</span><strong id="sale-profit-preview">GHS 0.00</strong></div>
+        <label for="sale-price">Customer price (GHS)</label><input id="sale-price" name="salePrice" type="number" min="0.01" step="0.01" required />
+        <label for="sale-phone">Customer phone number</label><input id="sale-phone" name="phone" type="tel" inputmode="tel" placeholder="0241234567" required />
+        <label for="sale-email">Customer email for purchase receipt</label><input id="sale-email" name="email" type="email" placeholder="customer@example.com" required />
+        <p class="sale-error" id="sale-error" role="status"></p>
+        <button class="agent-primary-button" id="sale-submit" type="submit">Continue to customer payment</button>
+        <p class="agent-small-note">The customer pays the full price through Paystack. Your base-price difference is credited after delivery.</p>
+      </form>
+    </dialog>
+
+    <script src="/js/agent-dashboard.js" defer></script>
+    <script src="/js/support-widget.js" defer></script>
+  </body>
+</html>

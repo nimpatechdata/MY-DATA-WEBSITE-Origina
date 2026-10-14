@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2f4f7" />
+    <title>Become a sub-agent · NImpatech data bundles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/agents.css" />
+  </head>
+  <body class="agent-page">
+    <header class="dashboard-header">
+      <div class="dashboard-header__inner">
+        <a class="dashboard-brand" href="/"><span>NImpatech</span><strong> data bundles</strong></a>
+        <nav class="dashboard-nav"><a href="/">Store</a><a href="#join">Become a sub-agent</a></nav>
+        <a class="agent-header-login" href="#login">Agent sign in</a>
+      </div>
+    </header>
+    <main class="agent-join-shell">
+      <section class="agent-join-hero">
+        <div class="agent-join-copy">
+          <p class="agent-eyebrow">NIMPATECH SUB-AGENT PROGRAM</p>
+          <h1>Build your own data bundle business.</h1>
+          <p>Join the NImpatech network, set your own customer prices above our base rates, and track every fulfilled order from one simple store.</p>
+          <div class="agent-benefits">
+            <span>Choose your selling price</span>
+            <span>Track every order</span>
+            <span>Earn margin after delivery</span>
+          </div>
+        </div>
+        <aside class="join-fee-panel">
+          <span class="fee-label">ONE-TIME MEMBERSHIP</span>
+          <strong>GHS 50</strong>
+          <p>Pay securely with Paystack. Your agent account activates after payment is verified.</p>
+          <a href="#join" class="fee-link">Apply to join <span aria-hidden="true">↓</span></a>
+        </aside>
+      </section>
+
+      <section class="agent-auth-grid" id="join">
+        <article class="agent-form-panel">
+          <div class="agent-section-head"><div><p class="agent-eyebrow">NEW AGENT</p><h2>Create your account</h2></div><span class="step-chip">GHS 50</span></div>
+          <p class="agent-form-intro">Your account remains pending until the one-time joining payment is verified.</p>
+          <form id="agent-enroll-form" class="agent-form">
+            <label for="agent-name">Full name</label>
+            <input id="agent-name" name="fullName" autocomplete="name" required maxlength="90" />
+            <label for="agent-email">Email address</label>
+            <input id="agent-email" name="email" type="email" autocomplete="email" required />
+            <label for="agent-phone">Ghana phone number</label>
+            <input id="agent-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0241234567" required />
+            <label for="agent-password">Password</label>
+            <input id="agent-password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+            <p class="agent-form-message" id="enroll-message" role="status"></p>
+            <button class="agent-primary-button" id="enroll-submit" type="submit">Continue to secure payment</button>
+          </form>
+          <p class="agent-small-note">We never ask you to share your password or API keys with support.</p>
+        </article>
+
+        <article class="agent-form-panel agent-login-panel" id="login">
+          <div class="agent-section-head"><div><p class="agent-eyebrow">ALREADY AN AGENT?</p><h2>Sign in to your store</h2></div></div>
+          <p class="agent-form-intro">Open your order tracker, price list, and profit wallet.</p>
+          <form id="agent-login-form" class="agent-form">
+            <label for="login-email">Email address</label>
+            <input id="login-email" name="email" type="email" autocomplete="username" required />
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+            <p class="agent-form-message" id="login-message" role="status"></p>
+            <button class="agent-secondary-button" type="submit">Sign in</button>
+            <button class="agent-primary-button" id="retry-membership" type="button" hidden>Retry GHS 50 membership payment</button>
+          </form>
+          <div class="agent-help-note"><span aria-hidden="true">i</span><p>Membership activation is checked after sign-in. If you have paid but remain pending, contact support with your Paystack reference.</p></div>
+        </article>
+      </section>
+      <p class="agent-setup-banner" id="supabase-setup-banner" hidden>Agent registration is being set up. Please contact support for enrollment details.</p>
+      <footer class="agent-footer"><a href="/">NImpatech data bundles</a><span>Secure checkout by Paystack</span></footer>
+    </main>
+    <script src="/js/agent-portal.js" defer></script>
+    <script src="/js/support-widget.js" defer></script>
+  </body>
+</html>

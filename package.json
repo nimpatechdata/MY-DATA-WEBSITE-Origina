@@ -1,0 +1,21 @@
+{
+  "name": "nimpatech-data-bundles",
+  "version": "1.0.0",
+  "description": "NImpatech data bundle storefront and sub-agent portal",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test src/services/paymentService.test.js src/controllers/checkoutController.test.js src/controllers/webhookController.test.js src/routes/api.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "nodemailer": "^10.1.0"
+  }
+}

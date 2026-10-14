@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Dashboard · NImpatech data bundles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="dashboard-page">
+    <header class="dashboard-header">
+      <div class="dashboard-header__inner">
+        <a class="dashboard-brand" href="/" aria-label="NImpatech data bundles home">
+          <span>NImpatech</span><strong> data bundles</strong>
+        </a>
+        <nav class="dashboard-nav" id="dashboard-nav" aria-label="Main navigation">
+          <a href="/checkout.html">New order</a>
+          <a href="/agents.html">Sub-agents</a>
+          <a href="#network-orders">Networks</a>
+          <a href="#track-order">Track order</a>
+        </nav>
+        <div class="header-actions">
+          <a class="header-action" href="#track-order" aria-label="Track an order" title="Track order">◷</a>
+          <a class="header-action header-action--buy" href="/checkout.html">Buy data</a>
+          <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="dashboard-nav">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-shell">
+      <section class="welcome-banner" aria-labelledby="welcome-title">
+        <div class="welcome-copy">
+          <p class="welcome-eyebrow">RESELLER WORKSPACE</p>
+          <h1 id="welcome-title">Good evening,<br />welcome back.</h1>
+          <p class="welcome-description">Your data business, in one place.</p>
+          <nav class="welcome-actions" aria-label="Dashboard shortcuts">
+            <a class="shortcut shortcut--primary" href="/checkout.html">＋ New order</a>
+            <a class="shortcut" href="/agents.html">Sub-agent portal</a>
+            <a class="shortcut" href="#track-order">Track an order</a>
+            <a class="shortcut shortcut--quiet" href="#network-orders">Networks</a>
+          </nav>
+        </div>
+        <div class="welcome-mark" aria-hidden="true"><span>GH</span></div>
+        <div class="welcome-foot">
+          <span><i class="status-dot"></i> Paystack checkout</span>
+          <span><i class="status-dot"></i> Automated delivery</span>
+          <span><i class="status-dot"></i> Ghana cedi pricing</span>
+        </div>
+      </section>
+
+      <section class="surface network-surface" id="network-orders" aria-labelledby="network-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">QUICK ACTION</p>
+            <h2 id="network-title">Start a new order</h2>
+          </div>
+          <a class="text-link" href="/checkout.html">Open checkout <span aria-hidden="true">›</span></a>
+        </div>
+        <div class="network-grid">
+          <a class="network-tile network-tile--mtn" href="/checkout.html?network=mtn">
+            <span class="network-symbol">MTN</span><span class="network-name">MTN</span><span class="network-action">Choose bundle <b aria-hidden="true">↗</b></span>
+          </a>
+          <a class="network-tile network-tile--telecel" href="/checkout.html?network=telecel">
+            <span class="network-symbol">T</span><span class="network-name">Telecel</span><span class="network-action">Choose bundle <b aria-hidden="true">↗</b></span>
+          </a>
+          <a class="network-tile network-tile--airteltigo" href="/checkout.html?network=airteltigo">
+            <span class="network-symbol">AT</span><span class="network-name">AirtelTigo</span><span class="network-action">Choose bundle <b aria-hidden="true">↗</b></span>
+          </a>
+        </div>
+      </section>
+
+      <section class="surface order-tracker" id="track-order" aria-labelledby="track-order-title">
+        <div class="section-heading">
+          <div><p class="section-kicker">PRIVATE ORDER STATUS</p><h2 id="track-order-title">Track your order</h2></div>
+        </div>
+        <form id="order-lookup-form" class="order-lookup-form">
+          <label for="order-reference">Order reference</label>
+          <div class="order-lookup-controls">
+            <input id="order-reference" name="reference" autocomplete="off" required />
+            <button class="text-link" type="submit">Find order</button>
+          </div>
+        </form>
+        <p class="orders-message" id="order-lookup-message" role="status"></p>
+        <div id="order-lookup-result" class="order-lookup-result" hidden>
+          <div class="row"><span>Status</span><strong id="lookup-status"></strong></div>
+          <div class="row"><span>Network</span><strong id="lookup-network"></strong></div>
+          <div class="row"><span>Bundle</span><strong id="lookup-bundle"></strong></div>
+          <div class="row"><span>Recipient</span><strong id="lookup-phone"></strong></div>
+          <div class="row"><span>Amount</span><strong id="lookup-amount"></strong></div>
+          <p id="lookup-delivery-message" class="orders-message"></p>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">NImpatech data bundles <span>·</span> Reseller dashboard</footer>
+    </main>
+    <script src="/js/order-activity.js" defer></script>
+    <script src="/js/support-widget.js" defer></script>
+  </body>
+</html>
