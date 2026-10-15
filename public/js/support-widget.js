@@ -5,6 +5,7 @@ const supportMessage = "Hello NImpatech, I need help with a data bundle order.";
 
 const supportRoot = document.createElement("div");
 supportRoot.className = "support-widget";
+supportRoot.id = "support-widget";
 supportRoot.innerHTML = `
   <button class="support-launcher" type="button" aria-expanded="false" aria-controls="support-panel">
     <span class="support-launcher__icon" aria-hidden="true">◌</span> Contact &amp; Support
@@ -122,6 +123,12 @@ function setSupportOpen(open) {
 supportLauncher.addEventListener("click", (event) => {
   if (supportMoved) { event.preventDefault(); supportMoved = false; return; }
   setSupportOpen(supportPanel.hidden);
+});
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("[data-open-support]");
+  if (!link) return;
+  event.preventDefault();
+  setSupportOpen(true);
 });
 supportClose.addEventListener("click", () => setSupportOpen(false));
 document.addEventListener("keydown", (event) => {
