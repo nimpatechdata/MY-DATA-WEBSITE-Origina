@@ -16,6 +16,16 @@ create table if not exists public.storefront_orders (
 create index if not exists storefront_orders_status_created_idx
   on public.storefront_orders (status, created_at desc);
 
+create table if not exists public.storefront_bundle_prices (
+  bundle_id text primary key,
+  price_ghs numeric(12, 2) not null check (price_ghs > 0),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.storefront_bundle_prices enable row level security;
+revoke all on public.storefront_bundle_prices from anon, authenticated;
+grant all on public.storefront_bundle_prices to service_role;
+
 alter table public.storefront_orders enable row level security;
 revoke all on public.storefront_orders from anon, authenticated;
 grant all on public.storefront_orders to service_role;

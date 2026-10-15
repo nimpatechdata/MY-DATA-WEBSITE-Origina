@@ -204,6 +204,8 @@ label {
 }
 
 .recipient-details { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--card) 92%, var(--green)); }
+.bundle-config-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(230px, .9fr); gap: 16px; align-items: start; }
+.bundle-config-layout .recipient-details { margin-top: 0; position: sticky; top: 18px; }
 .selection-hint { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
 .selection-hint strong { color: var(--text); }
 
@@ -224,7 +226,14 @@ label {
 .status-pill.delivered { background: rgba(24,160,88,.18); }
 .status-pill.delivery_failed, .status-pill.payment_failed { background: rgba(220,50,50,.18); }
 code { font-size: 11px; color: var(--muted); }
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.price-editor { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--text); }
+.price-editor label { margin: 0; }
+.price-editor input { width: 100%; margin-top: 5px; }
+.price-editor button { padding: 8px 12px; }
+.price-message { color: var(--muted); min-height: 15px; }
 
+@media (max-width: 760px) { .bundle-config-layout { grid-template-columns: 1fr; } .bundle-config-layout .recipient-details { position: static; } }
 @media (max-width: 620px) { .theme-switcher { position: static; margin: 10px 16px 0 auto; width: fit-content; } .admin-heading { align-items: start; flex-direction: column; } }
 
 .choice,

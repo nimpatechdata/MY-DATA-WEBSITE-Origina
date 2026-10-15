@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const bundles = require("../config/bundles");
+const catalogService = require("../services/catalogService");
 const networks = require("../config/networks");
 const orders = require("../store/orders");
 const paymentService = require("../services/paymentService");
@@ -11,7 +12,8 @@ const {
   phoneMatchesNetwork
 } = require("../utils/phone");
 
-function catalog() {
+async function catalog() {
+  const currentBundles = await catalogService.getBundles();
   return {
     networks: Object.values(networks).map(({ id, name, color, prefixes }) => ({
       id,
@@ -19,7 +21,7 @@ function catalog() {
       color,
       prefixes
     })),
-    bundles
+    bundles: currentBundles
   };
 }
 
@@ -60,7 +62,8 @@ async function createCheckout(req, res) {
       return res.status(400).json({ error: "Choose MTN, Telecel, or AirtelTigo." });
     }
 
-    const bundle = (bundles[network] || []).find((item) => item.id === bundleId);
+    const currentBundles = await catalogService.getBundles();
+    const bundle = (currentBundles[network] || []).find((item) => item.id === bundleId);
     if (!bundle) {
       return res.status(400).json({ error: "Choose a valid bundle size." });
     }

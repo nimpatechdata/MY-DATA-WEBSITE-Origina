@@ -1,10 +1,15 @@
 const crypto = require("crypto");
 const orders = require("../store/orders");
+const catalogService = require("../services/catalogService");
 
 const COOKIE_NAME = "nimpatech_admin";
 
 function secret() {
-  return String(process.env.ADMIN_DASHBOARD_TOKEN || "");
+  return String(process.env.ADMIN_PASSWORD || process.env.ADMIN_DASHBOARD_TOKEN || "");
+}
+
+function allowedEmails() {
+  return String(process.env.ADMIN_EMAILS || "").split(",").map((email) => email.trim().toLowerCase()).filter(Boolean);
 }
 
 function sign(value) {
@@ -37,9 +42,21 @@ function requireAdmin(req, res, next) {
 
 async function login(req, res) {
   if (!secret()) return res.status(503).json({ error: "Admin dashboard is not configured." });
-  if (String(req.body?.token || "") !== secret()) return res.status(401).json({ error: "Invalid admin token." });
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  const password = String(req.body?.password || req.body?.token || "");
+  if (!allowedEmails().includes(email) || password !== secret()) return res.status(401).json({ error: "Invalid admin email or password." });
   res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie()}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
   return res.json({ authenticated: true });
+}
+
+async function prices(_req, res) {
+  try { return res.json({ prices: await catalogService.listPrices() }); }
+  catch (error) { console.error("Admin price listing failed:", error.message); return res.status(503).json({ error: "Could not load prices." }); }
+}
+
+async function updatePrice(req, res) {
+  try { return res.json({ price: await catalogService.updatePrice(req.body?.bundleId, req.body?.priceGhs) }); }
+  catch (error) { return res.status(400).json({ error: error.message || "Could not update price." }); }
 }
 
 function logout(_req, res) {
@@ -76,4 +93,4 @@ async function list(req, res) {
   }
 }
 
-module.exports = { login, logout, list, requireAdmin };
+module.exports = { login, logout, list, prices, updatePrice, requireAdmin };

@@ -10,8 +10,8 @@ router.get("/health", (_req, res) => {
   res.json({ ok: true, service: "nimpatech-data-bundles" });
 });
 
-router.get("/catalog", (_req, res) => {
-  res.json(checkoutController.catalog());
+router.get("/catalog", async (_req, res) => {
+  res.json(await checkoutController.catalog());
 });
 
 router.post("/checkout", checkoutController.createCheckout);
@@ -36,5 +36,7 @@ router.post("/webhooks/vtu", webhookController.handleVtuWebhook);
 router.post("/admin/login", adminController.login);
 router.post("/admin/logout", adminController.logout);
 router.get("/admin/activity", adminController.requireAdmin, adminController.list);
+router.get("/admin/prices", adminController.requireAdmin, adminController.prices);
+router.put("/admin/prices", adminController.requireAdmin, adminController.updatePrice);
 
 module.exports = router;
