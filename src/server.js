@@ -1,4 +1,4 @@
-git push -u origin mainrequire("dotenv").config();
+require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
