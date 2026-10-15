@@ -49,8 +49,11 @@ function renderNetworks() {
 }
 
 function renderBundles() {
+  const recipientDetails = document.querySelector(".recipient-details");
   bundleBox.innerHTML = "";
   state.catalog.bundles[state.network].forEach((bundle) => {
+    const option = document.createElement("div");
+    option.className = `bundle-option ${state.bundleId === bundle.id ? "selected" : ""}`;
     const button = document.createElement("button");
     button.type = "button";
     button.className = `bundle ${state.bundleId === bundle.id ? "active" : ""}`;
@@ -60,7 +63,9 @@ function renderBundles() {
       renderBundles();
       renderSummary();
     });
-    bundleBox.appendChild(button);
+    option.appendChild(button);
+    if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
+    bundleBox.appendChild(option);
   });
 }
 
