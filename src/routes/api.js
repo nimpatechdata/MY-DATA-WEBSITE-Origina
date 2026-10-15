@@ -34,6 +34,8 @@ router.post("/webhooks/payment", webhookController.handlePaymentWebhook);
 router.post("/webhooks/vtu", webhookController.handleVtuWebhook);
 
 router.post("/admin/login", adminController.login);
+router.post("/admin/forgot-password", adminController.forgotPassword);
+router.post("/admin/reset-password", adminController.resetPassword);
 router.post("/admin/logout", adminController.logout);
 router.get("/admin/activity", adminController.requireAdmin, adminController.list);
 router.get("/admin/prices", adminController.requireAdmin, adminController.prices);

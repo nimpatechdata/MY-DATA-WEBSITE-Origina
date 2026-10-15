@@ -1,6 +1,8 @@
 const crypto = require("crypto");
 const orders = require("../store/orders");
 const catalogService = require("../services/catalogService");
+const supabase = require("../services/supabaseClient");
+const receiptService = require("../services/receiptService");
 
 const COOKIE_NAME = "nimpatech_admin";
 const SETTINGS_TABLE = "storefront_admin_settings";
@@ -34,9 +36,9 @@ function verifyPassword(password, storedHash) {
 
 async function readSettings() {
   try {
-    const { data, error } = await require("../services/supabaseClient").getAdminClient()
+    const { data, error } = await supabase.getAdminClient()
       .from(SETTINGS_TABLE)
-      .select("id, admin_email, password_hash")
+      .select("id, admin_email, password_hash, reset_token_hash, reset_expires_at")
       .eq("id", "singleton")
       .maybeSingle();
     if (error) {
@@ -117,13 +119,74 @@ async function changePassword(req, res) {
   if (newPassword.length < 8) return res.status(400).json({ error: "New password must be at least 8 characters." });
   const adminEmail = String(req.admin?.email || config.settings?.admin_email || allowedEmails()[0] || "").toLowerCase();
   if (!adminEmail) return res.status(400).json({ error: "Admin email is not configured." });
-  const { error } = await require("../services/supabaseClient").getAdminClient()
+  const { error } = await supabase.getAdminClient()
     .from(SETTINGS_TABLE)
     .upsert({ id: "singleton", admin_email: adminEmail, password_hash: hashPassword(newPassword), updated_at: new Date().toISOString() });
   if (error) return res.status(503).json({ error: "Password storage is not ready. Run the admin settings migration first." });
   const nextConfig = await adminConfig();
   res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie(nextConfig, adminEmail)}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
   return res.json({ updated: true });
+}
+
+async function forgotPassword(req, res) {
+  const generic = { message: "If that admin email is registered, a password reset link has been sent." };
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  if (!email) return res.json(generic);
+
+  try {
+    const config = await adminConfig();
+    if (!config.emails.includes(email)) return res.json(generic);
+    if (!receiptService.isConfigured()) return res.status(503).json({ error: "Password reset email is not configured. Add the SMTP settings in Vercel first." });
+
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const currentHash = config.passwordHash || hashPassword(config.password);
+    const { error } = await supabase.getAdminClient().from(SETTINGS_TABLE).upsert({
+      id: "singleton",
+      admin_email: email,
+      password_hash: currentHash,
+      reset_token_hash: tokenHash,
+      reset_expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+      updated_at: new Date().toISOString()
+    });
+    if (error) throw error;
+
+    const configuredBaseUrl = String(process.env.PUBLIC_APP_URL || process.env.ADMIN_APP_URL || "").replace(/\/$/, "");
+    const baseUrl = configuredBaseUrl || `${req.protocol}://${req.get("host")}`;
+    await receiptService.sendAdminPasswordReset(email, `${baseUrl}/admin?reset=${rawToken}`);
+    return res.json(generic);
+  } catch (error) {
+    console.error("Admin password reset request failed:", error.message);
+    return res.status(503).json({ error: "Could not send the reset email. Check the admin settings and SMTP configuration." });
+  }
+}
+
+async function resetPassword(req, res) {
+  const rawToken = String(req.body?.token || "");
+  const newPassword = String(req.body?.newPassword || "");
+  if (!rawToken || newPassword.length < 8) return res.status(400).json({ error: "Use a valid reset link and a password of at least 8 characters." });
+  try {
+    const settings = await readSettings();
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    if (!settings?.reset_token_hash || settings.reset_token_hash !== tokenHash || !settings.reset_expires_at || new Date(settings.reset_expires_at).getTime() <= Date.now()) {
+      return res.status(400).json({ error: "This reset link is invalid or expired. Request a new one." });
+    }
+    const passwordHash = hashPassword(newPassword);
+    const { error } = await supabase.getAdminClient().from(SETTINGS_TABLE).update({
+      password_hash: passwordHash,
+      reset_token_hash: null,
+      reset_expires_at: null,
+      updated_at: new Date().toISOString()
+    }).eq("id", "singleton");
+    if (error) throw error;
+    const nextConfig = await adminConfig();
+    const email = String(settings.admin_email).toLowerCase();
+    res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie(nextConfig, email)}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
+    return res.json({ updated: true });
+  } catch (error) {
+    console.error("Admin password reset failed:", error.message);
+    return res.status(503).json({ error: "Could not reset the password. Try again later." });
+  }
 }
 
 async function prices(_req, res) {
@@ -176,4 +239,4 @@ async function list(req, res) {
   }
 }
 
-module.exports = { login, logout, list, prices, updatePrice, changePassword, requireAdmin };
+module.exports = { login, logout, list, prices, updatePrice, changePassword, forgotPassword, resetPassword, requireAdmin };

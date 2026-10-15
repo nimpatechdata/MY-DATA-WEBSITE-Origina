@@ -30,8 +30,15 @@ create table if not exists public.storefront_admin_settings (
   id text primary key check (id = 'singleton'),
   admin_email text not null,
   password_hash text not null,
+  reset_token_hash text,
+  reset_expires_at timestamptz,
   updated_at timestamptz not null default now()
 );
+
+alter table public.storefront_admin_settings
+  add column if not exists reset_token_hash text;
+alter table public.storefront_admin_settings
+  add column if not exists reset_expires_at timestamptz;
 
 alter table public.storefront_admin_settings enable row level security;
 revoke all on public.storefront_admin_settings from anon, authenticated;

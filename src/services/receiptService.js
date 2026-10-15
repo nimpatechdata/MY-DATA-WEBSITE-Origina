@@ -74,4 +74,17 @@ async function sendReceipt(order, transportOverride) {
   return { sent: true, status: "sent", messageId: result.messageId || null };
 }
 
-module.exports = { buildReceipt, isConfigured, sendReceipt };
+async function sendAdminPasswordReset(email, resetUrl, transportOverride) {
+  if (!isConfigured()) return { sent: false, status: "not_configured" };
+  const safeUrl = escapeHtml(resetUrl);
+  const result = await (transportOverride || getTransport()).sendMail({
+    from: process.env.RECEIPT_FROM,
+    to: email,
+    subject: "NImpatech admin password reset",
+    text: `NImpatech admin password reset\n\nUse this link within 30 minutes to choose a new password:\n${resetUrl}\n\nIf you did not request this, ignore this email.`,
+    html: `<!doctype html><html><body style="margin:0;padding:24px;background:#f2f4f7;font-family:Arial,sans-serif;color:#182840"><main style="max-width:560px;margin:auto;padding:28px;background:#fff;border:1px solid #e4e9ef;border-radius:10px"><h1 style="margin:0 0 12px">Reset admin password</h1><p style="color:#64748b">This link expires in 30 minutes.</p><p><a href="${safeUrl}" style="display:inline-block;padding:12px 18px;background:#f4c400;color:#182840;text-decoration:none;border-radius:8px;font-weight:700">Choose a new password</a></p><p style="color:#64748b;font-size:12px">If you did not request this, ignore this email.</p></main></body></html>`
+  });
+  return { sent: true, status: "sent", messageId: result.messageId || null };
+}
+
+module.exports = { buildReceipt, isConfigured, sendReceipt, sendAdminPasswordReset };
