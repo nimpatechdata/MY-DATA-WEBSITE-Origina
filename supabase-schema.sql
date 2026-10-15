@@ -32,16 +32,17 @@ create table if not exists public.storefront_admin_settings (
   password_hash text not null,
   reset_token_hash text,
   reset_expires_at timestamptz,
+  site_settings jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now()
 );
 
 alter table public.storefront_admin_settings
-  add column if not exists reset_token_hash text;
-alter table public.storefront_admin_settings
-  add column if not exists reset_expires_at timestamptz;
+  add column if not exists site_settings jsonb not null default '{}'::jsonb;
 
 alter table public.storefront_admin_settings enable row level security;
+
 revoke all on public.storefront_admin_settings from anon, authenticated;
+
 grant all on public.storefront_admin_settings to service_role;
 
 alter table public.storefront_orders enable row level security;

@@ -38,7 +38,7 @@ async function readSettings() {
   try {
     const { data, error } = await supabase.getAdminClient()
       .from(SETTINGS_TABLE)
-      .select("id, admin_email, password_hash, reset_token_hash, reset_expires_at")
+      .select("id, admin_email, password_hash, reset_token_hash, reset_expires_at, site_settings")
       .eq("id", "singleton")
       .maybeSingle();
     if (error) {
@@ -239,4 +239,48 @@ async function list(req, res) {
   }
 }
 
-module.exports = { login, logout, list, prices, updatePrice, changePassword, forgotPassword, resetPassword, requireAdmin };
+const defaultSiteSettings = {
+  siteName: "NImpatech data bundles",
+  siteTagline: "Fast Ghana data bundles with secure checkout.",
+  siteDescription: "Choose a network, select a bundle, and enter the number that should receive the data.",
+  supportPhone: "0533323096",
+  whatsappNumber: "233533323096",
+  theme: "yellow"
+};
+
+async function siteSettings(_req, res) {
+  try {
+    const settings = await readSettings();
+    return res.json({ ...defaultSiteSettings, ...(settings?.site_settings || {}) });
+  } catch (error) {
+    console.error("Site settings listing failed:", error.message);
+    return res.json(defaultSiteSettings);
+  }
+}
+
+async function updateSiteSettings(req, res) {
+  const allowedThemes = new Set(["yellow", "darkblue", "white", "black"]);
+  const current = await readSettings();
+  const next = {
+    ...defaultSiteSettings,
+    ...(current?.site_settings || {}),
+    siteName: String(req.body?.siteName || "").trim().slice(0, 80),
+    siteTagline: String(req.body?.siteTagline || "").trim().slice(0, 160),
+    siteDescription: String(req.body?.siteDescription || "").trim().slice(0, 300),
+    supportPhone: String(req.body?.supportPhone || "").replace(/\D/g, "").slice(0, 15),
+    whatsappNumber: String(req.body?.whatsappNumber || "").replace(/\D/g, "").slice(0, 15),
+    theme: allowedThemes.has(req.body?.theme) ? req.body.theme : "yellow"
+  };
+  if (!next.siteName || !next.supportPhone || !next.whatsappNumber) return res.status(400).json({ error: "Site name and support numbers are required." });
+  const { error } = await supabase.getAdminClient().from(SETTINGS_TABLE).upsert({
+    id: "singleton",
+    admin_email: current?.admin_email || req.admin?.email || allowedEmails()[0],
+    password_hash: current?.password_hash || hashPassword(environmentPassword()),
+    site_settings: next,
+    updated_at: new Date().toISOString()
+  });
+  if (error) return res.status(503).json({ error: "Could not save site settings. Check the Supabase admin settings table." });
+  return res.json(next);
+}
+
+module.exports = { login, logout, list, prices, updatePrice, changePassword, forgotPassword, resetPassword, siteSettings, updateSiteSettings, requireAdmin };

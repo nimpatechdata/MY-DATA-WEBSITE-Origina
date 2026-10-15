@@ -13,6 +13,7 @@ router.get("/health", (_req, res) => {
 router.get("/catalog", async (_req, res) => {
   res.json(await checkoutController.catalog());
 });
+router.get("/site-settings", adminController.siteSettings);
 
 router.post("/checkout", checkoutController.createCheckout);
 router.get("/orders/:id", checkoutController.getOrder);
@@ -41,5 +42,7 @@ router.get("/admin/activity", adminController.requireAdmin, adminController.list
 router.get("/admin/prices", adminController.requireAdmin, adminController.prices);
 router.put("/admin/prices", adminController.requireAdmin, adminController.updatePrice);
 router.put("/admin/password", adminController.requireAdmin, adminController.changePassword);
+router.get("/admin/settings", adminController.requireAdmin, adminController.siteSettings);
+router.put("/admin/settings", adminController.requireAdmin, adminController.updateSiteSettings);
 
 module.exports = router;

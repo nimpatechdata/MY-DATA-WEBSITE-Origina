@@ -5,7 +5,7 @@ const dashboardError = document.getElementById("dashboard-error");
 const logout = document.getElementById("logout");
 const statusLabels = { awaiting_payment: "Attempted · unpaid", payment_failed: "Payment failed", processing: "Processing", paid_awaiting_delivery: "Awaiting delivery", delivered: "Delivered", delivery_failed: "Delivery failed", delivery_review: "Needs review", demo_pending: "Demo" };
 
-function showDashboard() { loginPanel.hidden = true; dashboard.hidden = false; logout.hidden = false; if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); loadOrders(); loadPrices(); }
+function showDashboard() { loginPanel.hidden = true; dashboard.hidden = false; logout.hidden = false; if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); loadOrders(); loadPrices(); loadSiteSettings().catch((error) => { document.getElementById("settings-error").textContent = error.message; }); }
 async function loadOrders() {
   dashboardError.textContent = "Loading…";
   const response = await fetch("/api/admin/activity");
@@ -62,3 +62,28 @@ document.getElementById("show-login").addEventListener("click", () => showAuthPa
 document.getElementById("forgot-form").addEventListener("submit", async (event) => { event.preventDefault(); const message = document.getElementById("forgot-error"); message.textContent = "Sending..."; const response = await fetch("/api/admin/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: document.getElementById("forgot-email").value }) }); const result = await response.json(); message.textContent = response.ok ? result.message : result.error || "Could not send reset link."; });
 document.getElementById("reset-form").addEventListener("submit", async (event) => { event.preventDefault(); const message = document.getElementById("reset-error"); const newPassword = document.getElementById("reset-password").value; if (newPassword !== document.getElementById("reset-confirm-password").value) { message.textContent = "Passwords do not match."; return; } const response = await fetch("/api/admin/reset-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: resetToken, newPassword }) }); const result = await response.json(); if (!response.ok) { message.textContent = result.error || "Could not reset password."; return; } showAuthPanel(loginPanel); showDashboard(); });
 if (resetToken) showAuthPanel(resetPanel);
+
+let activeOrderFilter = "all";
+function applyOrderFilter() {
+  document.querySelectorAll("#orders-body tr").forEach((row) => {
+    const status = row.querySelector(".status-pill")?.className || "";
+    const isDelivered = status.includes("delivered");
+    const isFailed = status.includes("failed");
+    const isPending = status.includes("processing") || status.includes("paid_awaiting_delivery") || status.includes("delivery_review");
+    row.hidden = activeOrderFilter === "delivered" ? !isDelivered : activeOrderFilter === "failed" ? !isFailed : activeOrderFilter === "pending" ? !isPending : false;
+  });
+}
+const orderFilterPanel = document.createElement("div");
+orderFilterPanel.className = "panel status-filter-panel";
+orderFilterPanel.innerHTML = '<div class="admin-table-tools"><h2>Order views</h2><span class="lead">Filter attempts by delivery status.</span></div><div class="admin-filter-buttons"><button class="btn btn-ghost active" data-order-filter="all" type="button">All attempts</button><button class="btn btn-ghost" data-order-filter="delivered" type="button">Delivered</button><button class="btn btn-ghost" data-order-filter="pending" type="button">Pending delivery</button><button class="btn btn-ghost" data-order-filter="failed" type="button">Failed</button></div>';
+dashboard.insertBefore(orderFilterPanel, dashboard.querySelector(".admin-table-panel"));
+orderFilterPanel.querySelectorAll("[data-order-filter]").forEach((button) => button.addEventListener("click", () => { activeOrderFilter = button.dataset.orderFilter; orderFilterPanel.querySelectorAll("[data-order-filter]").forEach((item) => item.classList.toggle("active", item === button)); applyOrderFilter(); }));
+new MutationObserver(applyOrderFilter).observe(document.getElementById("orders-body"), { childList: true });
+
+const settingsPanel = document.createElement("div");
+settingsPanel.className = "panel site-settings-panel";
+settingsPanel.innerHTML = '<h2>Site interface settings</h2><p class="lead">Update the public brand, support contact, and global theme.</p><form id="site-settings-form"><label>Site name<input name="siteName" maxlength="80" required></label><label>Tagline<input name="siteTagline" maxlength="160"></label><label>Homepage description<textarea name="siteDescription" maxlength="300" rows="3"></textarea></label><label>Support phone<input name="supportPhone" inputmode="tel" maxlength="15" required></label><label>WhatsApp number<input name="whatsappNumber" inputmode="tel" maxlength="15" required></label><label>Global theme<select name="theme"><option value="yellow">Yellow + dark blue</option><option value="darkblue">Dark blue</option><option value="white">White</option><option value="black">Black</option></select></label><p class="error" id="settings-error"></p><button class="primary" type="submit">Save interface settings</button></form>';
+dashboard.appendChild(settingsPanel);
+async function loadSiteSettings() { const response = await fetch("/api/admin/settings"); const data = await response.json(); if (!response.ok) throw new Error(data.error || "Could not load site settings."); const form = document.getElementById("site-settings-form"); Object.entries(data).forEach(([key, value]) => { if (form.elements[key]) form.elements[key].value = value; }); }
+loadSiteSettings().catch((error) => { document.getElementById("settings-error").textContent = error.message; });
+document.getElementById("site-settings-form").addEventListener("submit", async (event) => { event.preventDefault(); const form = event.target; const response = await fetch("/api/admin/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(new FormData(form))) }); const data = await response.json(); document.getElementById("settings-error").textContent = response.ok ? "Interface settings saved." : data.error || "Could not save settings."; });

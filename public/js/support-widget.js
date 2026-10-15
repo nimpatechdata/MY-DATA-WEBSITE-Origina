@@ -1,5 +1,5 @@
-const supportNumber = "0533323096";
-const whatsappNumber = "233533323096";
+let supportNumber = "0533323096";
+let whatsappNumber = "233533323096";
 const channelUrl = "https://whatsapp.com/channel/0029VbDe7YwIHphPAs75Yk0y";
 const supportMessage = "Hello NImpatech, I need help with a data bundle order.";
 
@@ -38,6 +38,16 @@ supportRoot.innerHTML = `
     </div>
   </section>`;
 document.body.appendChild(supportRoot);
+
+fetch("/api/site-settings").then((response) => response.ok ? response.json() : null).then((settings) => {
+  if (!settings) return;
+  supportNumber = settings.supportPhone || supportNumber;
+  whatsappNumber = settings.whatsappNumber || whatsappNumber;
+  const message = settings.siteName ? `Hello ${settings.siteName}, I need help with a data bundle order.` : supportMessage;
+  supportRoot.querySelector(".support-link--whatsapp").href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  supportRoot.querySelector(".support-direct a").href = `tel:+${whatsappNumber}`;
+  supportRoot.querySelector(".support-direct a").textContent = `+${whatsappNumber}`;
+}).catch(() => {});
 
 const supportLauncher = supportRoot.querySelector(".support-launcher");
 const supportPanel = supportRoot.querySelector(".support-panel");

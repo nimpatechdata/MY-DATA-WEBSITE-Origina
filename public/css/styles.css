@@ -226,6 +226,11 @@ label {
 .admin-table th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
 .admin-table small { display: block; margin-top: 4px; color: var(--muted); }
 .password-panel { margin-top: 18px; max-width: 620px; }
+.status-filter-panel, .site-settings-panel { margin-top: 18px; }
+.admin-filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-filter-buttons .active { border-color: var(--green); background: color-mix(in srgb, var(--card) 82%, var(--green)); }
+.site-settings-panel { max-width: 720px; }
+.site-settings-panel textarea { width: 100%; resize: vertical; }
 .admin-forgot { margin-top: 14px; text-align: center; }
 .link-button { border: 0; padding: 0; background: transparent; color: var(--green); cursor: pointer; font: inherit; text-decoration: underline; }
 .status-pill { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(244,196,0,.18); color: var(--text); font-size: 11px; font-weight: 700; }

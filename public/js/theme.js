@@ -25,6 +25,21 @@
     document.body.prepend(wrapper);
   }
 
+  fetch("/api/site-settings")
+    .then((response) => response.ok ? response.json() : null)
+    .then((settings) => {
+      if (!settings) return;
+      if (themes.some(([id]) => id === settings.theme)) {
+        document.documentElement.dataset.theme = settings.theme;
+        localStorage.setItem("nimpatech-theme", settings.theme);
+        const select = document.querySelector(".theme-switcher select");
+        if (select) select.value = settings.theme;
+      }
+      document.querySelectorAll(".logo, .dashboard-brand, .agent-result-brand").forEach((element) => { if (settings.siteName) element.textContent = settings.siteName; });
+      if (settings.siteName) document.title = document.title.replace(/NImpatech[^·]*/, settings.siteName);
+    })
+    .catch(() => {});
+
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
 })();
