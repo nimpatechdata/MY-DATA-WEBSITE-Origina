@@ -4,6 +4,7 @@ const VTU_PROVIDER = String(process.env.VTU_PROVIDER || "justice").toLowerCase()
 const DATAMART_BASE_URL = (process.env.DATAMART_BASE_URL || "https://api.datamartgh.shop/api/developer").replace(/\/$/, "");
 const DATAMART_API_KEY = process.env.DATAMART_API_KEY || "";
 const DATAMART_API_SECRET = process.env.DATAMART_API_SECRET || "";
+const DATAMART_STATUS_URL = String(process.env.DATAMART_STATUS_URL || "").trim();
 
 function isConfigured() {
   if (VTU_PROVIDER === "datamart") {
@@ -133,7 +134,50 @@ async function deliverDatamartBundle(order) {
 }
 
 async function getDeliveryStatus(providerReference) {
-  if (VTU_PROVIDER === "datamart") return null;
+  if (VTU_PROVIDER === "datamart") {
+    if (!isConfigured() || !DATAMART_STATUS_URL || !providerReference) return null;
+
+    const statusUrl = DATAMART_STATUS_URL.replace(
+      "{reference}",
+      encodeURIComponent(providerReference)
+    );
+    const response = await fetch(statusUrl, {
+      headers: {
+        "X-API-Key": DATAMART_API_KEY,
+        "X-API-Secret": DATAMART_API_SECRET
+      }
+    });
+    const result = await response.json().catch(() => ({}));
+    const bodyRateLimit = result.rateLimit || {};
+    const readRateLimitValue = (bodyValue, headerName) => {
+      const value = bodyValue ?? response.headers?.get?.(headerName);
+      if (value === null || value === undefined || value === "") return undefined;
+      const number = Number(value);
+      return Number.isFinite(number) ? number : undefined;
+    };
+    const rateLimit = {
+      limit: readRateLimitValue(bodyRateLimit.limit, "X-RateLimit-Limit"),
+      remaining: readRateLimitValue(bodyRateLimit.remaining, "X-RateLimit-Remaining"),
+      resetInSeconds: readRateLimitValue(bodyRateLimit.resetInSeconds, "X-RateLimit-Reset")
+    };
+    const data = result.data || result.order || result;
+    const providerStatus = String(
+      data.orderStatus || data.status || data.state || "UNKNOWN"
+    ).toUpperCase();
+
+    if (!response.ok || ["ERROR", "FAILED", "REJECTED"].includes(String(result.status || "").toUpperCase()) && !data.status) {
+      throw new Error(result.message || "Datamart status lookup failed.");
+    }
+
+    return {
+      provider: "datamart",
+      providerReference: data.purchaseId || data.orderReference || data.transactionReference || providerReference,
+      providerStatus,
+      rateLimit,
+      ...getTerminalStatus(providerStatus),
+      raw: result
+    };
+  }
   if (!isConfigured()) return null;
 
   const response = await fetch(

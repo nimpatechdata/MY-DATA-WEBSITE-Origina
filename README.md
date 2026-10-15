@@ -52,11 +52,14 @@ Set these values in `.env`:
 
 - Payment: `PAYSTACK_SECRET_KEY` and `PAYSTACK_PUBLIC_KEY` (or switch provider in `src/services/paymentService.js`)
 - Paystack webhook: configure `https://YOUR_DOMAIN/api/webhooks/payment` in the Paystack dashboard. Test with Paystack test keys and a public HTTPS test URL before switching both checkout and webhook verification to live keys.
+- Datamart webhook: configure `https://YOUR_DOMAIN/api/webhooks/vtu`. Send `X-DataMart-Signature`, `X-DataMart-Event`, and `Content-Type: application/json`. The handler accepts `order.completed` and failed status events, matching `data.orderReference`, `data.transactionId`, or `data.orderId` to the saved delivery reference. Set `DATAMART_WEBHOOK_SECRET` if Datamart provides a signing secret; the handler verifies the HMAC-SHA256 signature using Datamart's documented `JSON.stringify(req.body)` format, with raw-body compatibility as a fallback.
 - Production callback: set `PAYMENT_CALLBACK_URL=https://YOUR_DOMAIN/success.html` in the production host environment. Replace `YOUR_DOMAIN` with the exact deployed hostname; `localhost` cannot receive Paystack redirects or webhooks.
 - Data delivery: set `VTU_PROVIDER=datamart`, `DATAMART_API_KEY`, and `DATAMART_API_SECRET` in `.env`. Datamart receives both keys in `X-API-Key` and `X-API-Secret` headers.
+- Automatic status refresh: set `DATAMART_STATUS_URL` to Datamart's authenticated order-status URL template, including `{reference}`, for example `https://api.datamartgh.shop/api/developer/order/{reference}` if that is the endpoint provided for your account. The server polls pending orders every 60 seconds; change this with `DELIVERY_REFRESH_INTERVAL_MS`.
+- Rate-limit protection: the worker reads Datamart's `rateLimit` object or `X-RateLimit-*` headers and stops before the quota is exhausted. `DATAMART_MAX_STATUS_CHECKS_PER_RUN` defaults to 140, below the documented 150 requests per minute.
 - NImpatech email receipts: configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `RECEIPT_FROM` in `.env`. Receipts are sent after Paystack payment verification, separately from Paystack's own email. Customer email is optional; customers who leave it blank can print the receipt from the confirmation page.
 
-Datamart orders are created with `POST /api/developer/purchase`. MTN maps to `YELLO`, Telecel to `TELECEL`, and AirtelTigo to `AT_PREMIUM`; purchases use the provider wallet and `sam-` reference prefix. Pending provider statuses do not auto-refresh because no Datamart status endpoint has been configured yet.
+Datamart orders are created with `POST /api/developer/purchase`. MTN maps to `YELLO`, Telecel to `TELECEL`, and AirtelTigo to `AT_PREMIUM`; purchases use the provider wallet and `sam-` reference prefix. The status endpoint must be confirmed with Datamart support/API documentation before enabling automatic refresh; do not guess the URL in production.
 
 Ready-to-edit files:
 

@@ -4,6 +4,7 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const api = require("./routes/api");
+const deliveryRefreshService = require("./services/deliveryRefreshService");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,11 @@ app.use((req, res) => {
   return res.status(404).sendFile(path.join(publicDir, "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`NImpatech data bundles running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`NImpatech data bundles running at http://localhost:${PORT}`);
+    deliveryRefreshService.startDeliveryRefresh();
+  });
+}
+
+module.exports = app;

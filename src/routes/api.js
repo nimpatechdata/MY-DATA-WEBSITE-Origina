@@ -30,8 +30,6 @@ router.post("/agents/orders/confirm", agentController.confirmOrder);
 
 router.post("/webhooks/payment", webhookController.handlePaymentWebhook);
 
-router.post("/webhooks/vtu", (req, res) => {
-  res.json({ received: true, body: req.body || {} });
-});
+router.post("/webhooks/vtu", webhookController.handleVtuWebhook);
 
 module.exports = router;
