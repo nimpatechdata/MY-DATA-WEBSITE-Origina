@@ -213,7 +213,7 @@ test("order lookup exposes only customer-safe details for its private reference"
     network: "mtn",
     networkName: "MTN",
     size: "1GB",
-    validity: "30 days",
+    validity: "3 months",
     priceGhs: 5,
     phone: "0241234567",
     email: "customer@example.com",
