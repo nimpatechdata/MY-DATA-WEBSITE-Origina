@@ -3,8 +3,9 @@ const orders = require("../store/orders");
 const catalogService = require("../services/catalogService");
 
 const COOKIE_NAME = "nimpatech_admin";
+const SETTINGS_TABLE = "storefront_admin_settings";
 
-function secret() {
+function environmentPassword() {
   return String(process.env.ADMIN_PASSWORD || process.env.ADMIN_DASHBOARD_TOKEN || "");
 }
 
@@ -12,41 +13,117 @@ function allowedEmails() {
   return String(process.env.ADMIN_EMAILS || "").split(",").map((email) => email.trim().toLowerCase()).filter(Boolean);
 }
 
-function sign(value) {
-  return crypto.createHmac("sha256", secret()).update(value).digest("hex");
+function sign(value, key) {
+  return crypto.createHmac("sha256", key).update(value).digest("hex");
 }
 
-function makeCookie() {
-  const value = Buffer.from(secret(), "utf8").toString("base64url");
-  return `${value}.${sign(value)}`;
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
+  return `scrypt$${salt}$${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+  if (!storedHash) return password === environmentPassword();
+  const [, salt, expectedHex] = String(storedHash).split("$");
+  if (!salt || !expectedHex) return false;
+  const actual = crypto.scryptSync(password, salt, 64);
+  const expected = Buffer.from(expectedHex, "hex");
+  return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+}
+
+async function readSettings() {
+  try {
+    const { data, error } = await require("../services/supabaseClient").getAdminClient()
+      .from(SETTINGS_TABLE)
+      .select("id, admin_email, password_hash")
+      .eq("id", "singleton")
+      .maybeSingle();
+    if (error) {
+      if (["42P01", "PGRST205"].includes(error.code) || error.statusCode === 503) return null;
+      throw error;
+    }
+    return data || null;
+  } catch (error) {
+    if (["42P01", "PGRST205"].includes(error.code) || error.statusCode === 503) return null;
+    throw error;
+  }
+}
+
+async function adminConfig() {
+  const settings = await readSettings();
+  const password = environmentPassword();
+  const passwordHash = settings?.password_hash || null;
+  return {
+    settings,
+    password,
+    passwordHash,
+    credentialVersion: passwordHash || password,
+    emails: [...new Set([...allowedEmails(), settings?.admin_email].filter(Boolean).map((email) => String(email).toLowerCase()))],
+    signingKey: String(process.env.ADMIN_COOKIE_SECRET || password || passwordHash || "nimpatech-admin-cookie")
+  };
+}
+
+function makeCookie(config, email) {
+  const value = Buffer.from(JSON.stringify({ email, version: config.credentialVersion }), "utf8").toString("base64url");
+  return `${value}.${sign(value, config.signingKey)}`;
 }
 
 function parseCookies(header) {
   return Object.fromEntries(String(header || "").split(";").map((part) => part.trim().split("=")).filter(([key, value]) => key && value));
 }
 
-function isAuthenticated(req) {
-  const token = secret();
-  if (!token) return false;
+async function getAuthenticatedAdmin(req) {
+  const config = await adminConfig();
+  if (!config.credentialVersion) return null;
   const cookie = parseCookies(req.get("cookie"))[COOKIE_NAME] || "";
   const [value, signature] = cookie.split(".");
-  if (!value || !signature) return false;
-  const expected = sign(value);
-  return signature.length === expected.length && crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected)) && Buffer.from(value, "base64url").toString("utf8") === token;
+  if (!value || !signature) return null;
+  const expected = sign(value, config.signingKey);
+  if (signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return null;
+  let payload;
+  try { payload = JSON.parse(Buffer.from(value, "base64url").toString("utf8")); } catch { return null; }
+  if (payload.version !== config.credentialVersion || !config.emails.includes(String(payload.email || "").toLowerCase())) return null;
+  return { ...config, email: String(payload.email).toLowerCase() };
 }
 
-function requireAdmin(req, res, next) {
-  if (!isAuthenticated(req)) return res.status(401).json({ error: "Admin login required." });
-  return next();
+async function requireAdmin(req, res, next) {
+  try {
+    const admin = await getAuthenticatedAdmin(req);
+    if (!admin) return res.status(401).json({ error: "Admin login required." });
+    req.admin = admin;
+    return next();
+  } catch (error) {
+    console.error("Admin authentication failed:", error.message);
+    return res.status(503).json({ error: "Admin authentication is temporarily unavailable." });
+  }
 }
 
 async function login(req, res) {
-  if (!secret()) return res.status(503).json({ error: "Admin dashboard is not configured." });
+  const config = await adminConfig();
+  if (!config.credentialVersion) return res.status(503).json({ error: "Admin dashboard is not configured." });
   const email = String(req.body?.email || "").trim().toLowerCase();
   const password = String(req.body?.password || req.body?.token || "");
-  if (!allowedEmails().includes(email) || password !== secret()) return res.status(401).json({ error: "Invalid admin email or password." });
-  res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie()}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
+  if (!config.emails.includes(email) || !verifyPassword(password, config.passwordHash)) return res.status(401).json({ error: "Invalid admin email or password." });
+  res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie(config, email)}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
   return res.json({ authenticated: true });
+}
+
+async function changePassword(req, res) {
+  const config = req.admin || await adminConfig();
+  const currentPassword = String(req.body?.currentPassword || "");
+  const newPassword = String(req.body?.newPassword || "");
+  if (!verifyPassword(currentPassword, config.passwordHash)) return res.status(401).json({ error: "Current password is incorrect." });
+  if (newPassword.length < 8) return res.status(400).json({ error: "New password must be at least 8 characters." });
+  const adminEmail = String(req.admin?.email || config.settings?.admin_email || allowedEmails()[0] || "").toLowerCase();
+  if (!adminEmail) return res.status(400).json({ error: "Admin email is not configured." });
+  const { error } = await require("../services/supabaseClient").getAdminClient()
+    .from(SETTINGS_TABLE)
+    .upsert({ id: "singleton", admin_email: adminEmail, password_hash: hashPassword(newPassword), updated_at: new Date().toISOString() });
+  if (error) return res.status(503).json({ error: "Password storage is not ready. Run the admin settings migration first." });
+  const nextConfig = await adminConfig();
+  res.setHeader("Set-Cookie", `${COOKIE_NAME}=${makeCookie(nextConfig, adminEmail)}; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === "production" ? "Secure; " : ""}Path=/; Max-Age=28800`);
+  return res.json({ updated: true });
 }
 
 async function prices(_req, res) {
@@ -82,9 +159,15 @@ async function list(req, res) {
       priceGhs: order.priceGhs,
       status: order.status,
       paymentPaid: Boolean(order.payment?.paid),
+      orderReference: order.payment?.reference || order.id,
       deliveryStatus: order.delivery?.providerStatus || null,
       delivered: Boolean(order.delivery?.delivered),
-      failed: Boolean(order.delivery?.failed)
+      failed: Boolean(order.delivery?.failed),
+      providerOrderReference: order.delivery?.providerOrderReference || null,
+      providerTransactionReference: order.delivery?.providerTransactionReference || null,
+      deliveredAt: order.delivery?.deliveredAt || null,
+      estimatedMinutes: order.delivery?.estimatedMinutes ?? Number(process.env.DATAMART_DELIVERY_ESTIMATE_MINUTES || 5),
+      estimatedDeliveryAt: order.delivery?.estimatedDeliveryAt || null
     }));
     return res.json({ summary, orders: output });
   } catch (error) {
@@ -93,4 +176,4 @@ async function list(req, res) {
   }
 }
 
-module.exports = { login, logout, list, prices, updatePrice, requireAdmin };
+module.exports = { login, logout, list, prices, updatePrice, changePassword, requireAdmin };

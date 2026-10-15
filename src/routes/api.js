@@ -38,5 +38,6 @@ router.post("/admin/logout", adminController.logout);
 router.get("/admin/activity", adminController.requireAdmin, adminController.list);
 router.get("/admin/prices", adminController.requireAdmin, adminController.prices);
 router.put("/admin/prices", adminController.requireAdmin, adminController.updatePrice);
+router.put("/admin/password", adminController.requireAdmin, adminController.changePassword);
 
 module.exports = router;

@@ -26,6 +26,17 @@ alter table public.storefront_bundle_prices enable row level security;
 revoke all on public.storefront_bundle_prices from anon, authenticated;
 grant all on public.storefront_bundle_prices to service_role;
 
+create table if not exists public.storefront_admin_settings (
+  id text primary key check (id = 'singleton'),
+  admin_email text not null,
+  password_hash text not null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.storefront_admin_settings enable row level security;
+revoke all on public.storefront_admin_settings from anon, authenticated;
+grant all on public.storefront_admin_settings to service_role;
+
 alter table public.storefront_orders enable row level security;
 revoke all on public.storefront_orders from anon, authenticated;
 grant all on public.storefront_orders to service_role;

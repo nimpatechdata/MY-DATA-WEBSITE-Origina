@@ -152,7 +152,13 @@ async function getOrder(req, res) {
           ) {
             order = await orders.updateOrder(order.id, {
               status: nextStatus,
-              delivery: { ...order.delivery, ...deliveryStatus }
+              delivery: {
+                ...order.delivery,
+                ...deliveryStatus,
+                deliveredAt: deliveryStatus.delivered
+                  ? (order.delivery.deliveredAt || new Date().toISOString())
+                  : order.delivery.deliveredAt || null
+              }
             });
           }
         }
@@ -230,6 +236,8 @@ async function confirmPayment(req, res) {
           message: providerRejected
             ? error.message || "The data provider rejected delivery. Contact support before retrying."
             : "Payment is confirmed, but data delivery needs a status check. Contact support before retrying.",
+          estimatedMinutes: Number(process.env.DATAMART_DELIVERY_ESTIMATE_MINUTES || 5),
+          estimatedDeliveryAt: null,
           rateLimit: error.rateLimit || null,
           providerDetails: error.providerDetails || null
         }
@@ -241,9 +249,18 @@ async function confirmPayment(req, res) {
       : delivery.failed
         ? "delivery_failed"
         : "paid_awaiting_delivery";
+    const estimatedMinutes = Number(process.env.DATAMART_DELIVERY_ESTIMATE_MINUTES || 5);
+    const deliveryWithEstimate = {
+      ...delivery,
+      estimatedMinutes: Number.isFinite(estimatedMinutes) && estimatedMinutes > 0 ? estimatedMinutes : 5,
+      estimatedDeliveryAt: delivery.delivered
+        ? null
+        : new Date(Date.now() + (Number.isFinite(estimatedMinutes) && estimatedMinutes > 0 ? estimatedMinutes : 5) * 60 * 1000).toISOString(),
+      deliveredAt: delivery.delivered ? new Date().toISOString() : null
+    };
     updatedOrder = await orders.updateOrder(order.id, {
       status: nextStatus,
-      delivery
+      delivery: deliveryWithEstimate
     });
 
     return res.json(publicOrder(updatedOrder));

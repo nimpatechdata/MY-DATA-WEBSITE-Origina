@@ -110,6 +110,9 @@ async function handleVtuWebhook(req, res) {
       providerStatus,
       delivered: completed,
       failed,
+      deliveredAt: completed
+        ? (data.updatedAt || event.timestamp || new Date().toISOString())
+        : (order.delivery?.deliveredAt || null),
       webhookEvent: event.event || null,
       webhookUpdatedAt: event.timestamp || new Date().toISOString(),
       rawWebhook: event
