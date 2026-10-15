@@ -1026,11 +1026,20 @@ footer {
   .panel .lead { color: #111; }
 }
 
-.support-launcher {
+.support-widget {
   position: fixed;
   z-index: 20;
-  right: 22px;
-  bottom: 20px;
+  left: var(--support-left, auto);
+  top: var(--support-top, auto);
+  right: var(--support-right, 22px);
+  bottom: var(--support-bottom, 20px);
+  pointer-events: none;
+}
+
+.support-launcher {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
   min-height: 52px;
   display: inline-flex;
   align-items: center;
@@ -1057,10 +1066,11 @@ footer {
 }
 
 .support-panel {
-  position: fixed;
+  position: absolute;
   z-index: 21;
-  right: 22px;
-  bottom: 84px;
+  left: 0;
+  bottom: calc(100% + 12px);
+  pointer-events: auto;
   width: min(360px, calc(100vw - 28px));
   max-height: min(680px, calc(100vh - 112px));
   display: flex;
@@ -1263,6 +1273,16 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .support-launcher { right: 14px; bottom: 14px; min-height: 48px; padding: 0 15px; }
-  .support-panel { right: 14px; bottom: 72px; width: calc(100vw - 28px); max-height: calc(100vh - 90px); }
+  .support-widget { right: 14px; bottom: 14px; }
+  .support-launcher { min-height: 48px; padding: 0 15px; }
+  .support-panel { width: calc(100vw - 28px); max-height: calc(100vh - 90px); }
+}
+
+.site-footer {
+  width: min(1120px, calc(100% - 32px));
+  margin: 22px auto 0;
+  padding: 18px 0 28px;
+  color: #8b96a7;
+  font-size: 11px;
+  text-align: center;
 }

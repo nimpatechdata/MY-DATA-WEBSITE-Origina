@@ -54,6 +54,64 @@ const supportPanel = supportRoot.querySelector(".support-panel");
 const supportClose = supportRoot.querySelector(".support-close");
 const chatLog = supportRoot.querySelector(".support-chat-log");
 
+const savedPosition = (() => {
+  try { return JSON.parse(localStorage.getItem("nimpatech-support-position-v1")); } catch { return null; }
+})();
+const supportPosition = savedPosition && Number.isFinite(savedPosition.left) && Number.isFinite(savedPosition.top)
+  ? savedPosition
+  : { left: null, top: null };
+let supportDragging = false;
+let supportMoved = false;
+let supportPointerId = null;
+let supportOrigin = null;
+
+function clampSupportPosition(left, top) {
+  const rect = supportLauncher.getBoundingClientRect();
+  return {
+    left: Math.max(8, Math.min(left, window.innerWidth - rect.width - 8)),
+    top: Math.max(8, Math.min(top, window.innerHeight - rect.height - 8))
+  };
+}
+
+function applySupportPosition(position) {
+  if (position.left === null || position.top === null) return;
+  const next = clampSupportPosition(position.left, position.top);
+  supportRoot.style.setProperty("--support-left", `${next.left}px`);
+  supportRoot.style.setProperty("--support-top", `${next.top}px`);
+  supportRoot.style.removeProperty("--support-right");
+  supportRoot.style.removeProperty("--support-bottom");
+}
+
+function saveSupportPosition() {
+  const rect = supportRoot.getBoundingClientRect();
+  localStorage.setItem("nimpatech-support-position-v1", JSON.stringify({ left: rect.left, top: rect.top }));
+}
+
+supportLauncher.addEventListener("pointerdown", (event) => {
+  supportDragging = true;
+  supportMoved = false;
+  supportPointerId = event.pointerId;
+  supportOrigin = { x: event.clientX, y: event.clientY, left: supportRoot.getBoundingClientRect().left, top: supportRoot.getBoundingClientRect().top };
+  supportLauncher.setPointerCapture(event.pointerId);
+});
+supportLauncher.addEventListener("pointermove", (event) => {
+  if (!supportDragging || event.pointerId !== supportPointerId) return;
+  const dx = event.clientX - supportOrigin.x;
+  const dy = event.clientY - supportOrigin.y;
+  if (Math.abs(dx) + Math.abs(dy) > 6) supportMoved = true;
+  if (supportMoved) applySupportPosition({ left: supportOrigin.left + dx, top: supportOrigin.top + dy });
+});
+supportLauncher.addEventListener("pointerup", (event) => {
+  if (!supportDragging || event.pointerId !== supportPointerId) return;
+  supportDragging = false;
+  if (supportMoved) {
+    event.preventDefault();
+    saveSupportPosition();
+  }
+});
+window.addEventListener("resize", () => applySupportPosition({ left: supportRoot.getBoundingClientRect().left, top: supportRoot.getBoundingClientRect().top }));
+applySupportPosition(supportPosition);
+
 function setSupportOpen(open) {
   supportPanel.hidden = !open;
   supportLauncher.setAttribute("aria-expanded", String(open));
@@ -61,7 +119,10 @@ function setSupportOpen(open) {
   else supportLauncher.focus();
 }
 
-supportLauncher.addEventListener("click", () => setSupportOpen(supportPanel.hidden));
+supportLauncher.addEventListener("click", (event) => {
+  if (supportMoved) { event.preventDefault(); supportMoved = false; return; }
+  setSupportOpen(supportPanel.hidden);
+});
 supportClose.addEventListener("click", () => setSupportOpen(false));
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !supportPanel.hidden) setSupportOpen(false);
