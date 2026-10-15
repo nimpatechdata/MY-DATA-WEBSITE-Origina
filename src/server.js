@@ -33,6 +33,10 @@ app.get("/agents/dashboard", (_req, res) => {
   res.sendFile(path.join(publicDir, "agent-dashboard.html"));
 });
 
+app.get("/admin", (_req, res) => {
+  res.sendFile(path.join(publicDir, "admin.html"));
+});
+
 app.get("/success", (_req, res) => {
   res.sendFile(path.join(publicDir, "success.html"));
 });

@@ -29,11 +29,14 @@
           <label>Bundle size</label>
           <div class="choices" id="bundle-choices"></div>
 
-          <label for="phone">Ghana phone number</label>
-          <input id="phone" name="phone" inputmode="tel" placeholder="0241234567" maxlength="13" required />
+          <div class="recipient-details" aria-live="polite">
+            <p class="selection-hint">Selected bundle: <strong id="selected-bundle-label">—</strong></p>
+            <label for="phone">Recipient phone number</label>
+            <input id="phone" name="phone" inputmode="tel" placeholder="0241234567" maxlength="13" required />
 
-          <label for="email">Email for your purchase receipt <span>(optional)</span></label>
-          <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" />
+            <label for="email">Email for your purchase receipt <span>(optional)</span></label>
+            <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" />
+          </div>
 
           <p class="error" id="error"></p>
           <button class="primary" type="submit" id="pay-btn">Continue to payment</button>
@@ -56,6 +59,7 @@
 
       <footer>Your number is checked against MTN, Telecel and AirtelTigo prefixes.</footer>
     </div>
+    <script src="/js/theme.js" defer></script>
     <script src="/js/checkout.js"></script>
     <script src="/js/support-widget.js" defer></script>
   </body>

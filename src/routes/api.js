@@ -2,6 +2,7 @@ const express = require("express");
 const checkoutController = require("../controllers/checkoutController");
 const agentController = require("../controllers/agentController");
 const webhookController = require("../controllers/webhookController");
+const adminController = require("../controllers/adminController");
 
 const router = express.Router();
 
@@ -31,5 +32,9 @@ router.post("/agents/orders/confirm", agentController.confirmOrder);
 router.post("/webhooks/payment", webhookController.handlePaymentWebhook);
 
 router.post("/webhooks/vtu", webhookController.handleVtuWebhook);
+
+router.post("/admin/login", adminController.login);
+router.post("/admin/logout", adminController.logout);
+router.get("/admin/activity", adminController.requireAdmin, adminController.list);
 
 module.exports = router;

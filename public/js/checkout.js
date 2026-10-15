@@ -25,6 +25,9 @@ function renderSummary() {
   document.getElementById("sum-validity").textContent = bundle ? bundle.validity : "—";
   document.getElementById("sum-phone").textContent = phoneInput.value || "—";
   document.getElementById("sum-total").textContent = bundle ? `GHS ${bundle.priceGhs}` : "GHS 0";
+  document.getElementById("selected-bundle-label").textContent = bundle
+    ? `${network?.name || "Network"} · ${bundle.size} · GHS ${bundle.priceGhs}`
+    : "Choose a bundle above";
 }
 
 function renderNetworks() {

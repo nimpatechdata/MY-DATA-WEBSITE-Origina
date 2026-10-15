@@ -1,16 +1,21 @@
 :root {
-  --bg: #07140f;
-  --bg-2: #0d241b;
-  --card: #123226;
-  --line: rgba(255, 255, 255, 0.1);
-  --text: #f4f7f5;
-  --muted: #b7c9bf;
-  --gold: #f0c14b;
-  --green: #20c997;
+  --bg: #071a35;
+  --bg-2: #0d2c55;
+  --card: #ffffff;
+  --line: rgba(7, 26, 53, 0.14);
+  --text: #081326;
+  --muted: #52647a;
+  --gold: #f4c400;
+  --green: #f4c400;
   --mtn: #ffcc00;
   --telecel: #ff4d4d;
   --at: #4da3ff;
 }
+
+:root[data-theme="yellow"] { --bg: #071a35; --bg-2: #0d2c55; --card: #ffffff; --line: rgba(7, 26, 53, 0.14); --text: #081326; --muted: #52647a; --green: #f4c400; }
+:root[data-theme="darkblue"] { --bg: #061329; --bg-2: #0b2850; --card: #102f59; --line: rgba(255,255,255,.16); --text: #f7fbff; --muted: #b8c8dc; --green: #f4c400; }
+:root[data-theme="white"] { --bg: #f5f7fb; --bg-2: #ffffff; --card: #ffffff; --line: rgba(8,19,38,.12); --text: #081326; --muted: #52647a; --green: #f4c400; }
+:root[data-theme="black"] { --bg: #050505; --bg-2: #151515; --card: #202020; --line: rgba(255,255,255,.14); --text: #ffffff; --muted: #c2c2c2; --green: #f4c400; }
 
 * {
   box-sizing: border-box;
@@ -22,7 +27,7 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background:
     radial-gradient(circle at top right, rgba(32, 201, 151, 0.18), transparent 32%),
-    linear-gradient(180deg, var(--bg), #05110c 80%);
+    linear-gradient(180deg, var(--bg), var(--bg-2) 80%);
   color: var(--text);
   min-height: 100vh;
 }
@@ -43,6 +48,26 @@ header {
   align-items: center;
   padding: 22px 0;
 }
+
+.theme-switcher {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.theme-switcher select { border: 0; background: transparent; color: inherit; font: inherit; outline: none; }
 
 .logo {
   font-weight: 800;
@@ -177,6 +202,30 @@ label {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+
+.recipient-details { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--card) 92%, var(--green)); }
+.selection-hint { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+.selection-hint strong { color: var(--text); }
+
+.admin-shell { padding-bottom: 48px; }
+.admin-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; padding: 42px 0 22px; }
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 10px 0 18px; }
+.admin-stats article { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); color: var(--muted); }
+.admin-stats span, .admin-stats strong { display: block; }
+.admin-stats strong { margin-top: 7px; color: var(--text); font-size: 26px; }
+.admin-table-panel { overflow: hidden; }
+.admin-table-tools { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.admin-table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 850px; color: var(--text); font-size: 13px; }
+.admin-table th, .admin-table td { padding: 12px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.admin-table th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.admin-table small { display: block; margin-top: 4px; color: var(--muted); }
+.status-pill { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(244,196,0,.18); color: var(--text); font-size: 11px; font-weight: 700; }
+.status-pill.delivered { background: rgba(24,160,88,.18); }
+.status-pill.delivery_failed, .status-pill.payment_failed { background: rgba(220,50,50,.18); }
+code { font-size: 11px; color: var(--muted); }
+
+@media (max-width: 620px) { .theme-switcher { position: static; margin: 10px 16px 0 auto; width: fit-content; } .admin-heading { align-items: start; flex-direction: column; } }
 
 .choice,
 .bundle {
