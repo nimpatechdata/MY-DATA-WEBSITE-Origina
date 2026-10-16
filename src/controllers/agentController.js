@@ -333,7 +333,7 @@ const retryMembership = safeHandler(async (req, res) => {
 }, "Could not restart membership payment.");
 
 const getCatalog = safeHandler(async (_req, res) => {
-  res.json(agentCatalog.getAgentCatalog());
+  res.json(await agentCatalog.getAgentCatalog());
 }, "Could not load agent catalog.");
 
 const getDashboard = safeHandler(async (req, res) => {
@@ -362,7 +362,7 @@ const getDashboard = safeHandler(async (req, res) => {
   if (ledgerError) throw ledgerError;
 
   const priceMap = new Map((prices || []).map((item) => [`${item.network}:${Number(item.size_gb)}`, Number(item.sale_price)]));
-  const catalog = agentCatalog.getAgentCatalog().map((item) => ({
+  const catalog = (await agentCatalog.getAgentCatalog()).map((item) => ({
     ...item,
     salePrice: priceMap.get(`${item.network}:${item.sizeGb}`) ?? item.basePrice
   }));
@@ -381,7 +381,7 @@ const savePrice = safeHandler(async (req, res) => {
   const network = String(req.body?.network || "").toLowerCase();
   const sizeGb = Number(req.body?.sizeGb);
   const salePrice = Number(req.body?.salePrice);
-  const bundle = agentCatalog.findBundle(network, sizeGb);
+  const bundle = await agentCatalog.findBundle(network, sizeGb);
   if (!bundle) throw httpError("Choose an available bundle.", 400);
   if (!Number.isFinite(salePrice) || salePrice <= bundle.basePrice) {
     throw httpError(`Your price must be higher than the GHS ${bundle.basePrice.toFixed(2)} base price.`, 400);
@@ -408,7 +408,7 @@ const createOrder = safeHandler(async (req, res) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw httpError("Enter the customer's email so we can send their receipt.", 400);
   }
-  const bundle = agentCatalog.findBundle(network, sizeGb);
+  const bundle = await agentCatalog.findBundle(network, sizeGb);
   if (!bundle) throw httpError("Choose an available bundle.", 400);
   if (!isValidGhanaMobile(phone) || !phoneMatchesNetwork(phone, network)) {
     throw httpError("Enter a valid phone number for the chosen network.", 400);

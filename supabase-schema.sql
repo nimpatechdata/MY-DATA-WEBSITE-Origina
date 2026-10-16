@@ -19,8 +19,16 @@ create index if not exists storefront_orders_status_created_idx
 create table if not exists public.storefront_bundle_prices (
   bundle_id text primary key,
   price_ghs numeric(12, 2) not null check (price_ghs > 0),
+  reseller_min_price_ghs numeric(12, 2) check (reseller_min_price_ghs > 0 and reseller_min_price_ghs <= price_ghs),
   updated_at timestamptz not null default now()
 );
+
+alter table public.storefront_bundle_prices
+  add column if not exists reseller_min_price_ghs numeric(12, 2);
+
+update public.storefront_bundle_prices
+set reseller_min_price_ghs = price_ghs
+where reseller_min_price_ghs is null;
 
 alter table public.storefront_bundle_prices enable row level security;
 revoke all on public.storefront_bundle_prices from anon, authenticated;

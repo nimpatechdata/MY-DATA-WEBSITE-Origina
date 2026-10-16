@@ -21,7 +21,7 @@ async function catalog() {
       color,
       prefixes
     })),
-    bundles: currentBundles
+    bundles: Object.fromEntries(Object.entries(currentBundles).map(([network, items]) => [network, items.map(({ id, size, validity, priceGhs }) => ({ id, size, validity, priceGhs }))]))
   };
 }
 

@@ -195,7 +195,11 @@ async function prices(_req, res) {
 }
 
 async function updatePrice(req, res) {
-  try { return res.json({ price: await catalogService.updatePrice(req.body?.bundleId, req.body?.priceGhs) }); }
+  try {
+    const customerPrice = req.body?.customerPriceGhs ?? req.body?.priceGhs;
+    const resellerMinPrice = req.body?.resellerMinPriceGhs ?? customerPrice;
+    return res.json({ price: await catalogService.updatePrice(req.body?.bundleId, customerPrice, resellerMinPrice) });
+  }
   catch (error) { return res.status(400).json({ error: error.message || "Could not update price." }); }
 }
 
