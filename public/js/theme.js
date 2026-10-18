@@ -22,7 +22,13 @@
       document.documentElement.dataset.theme = select.value;
       localStorage.setItem("nimpatech-theme", select.value);
     });
-    document.body.prepend(wrapper);
+    const dashboardNav = document.getElementById("dashboard-nav");
+    if (dashboardNav) {
+      wrapper.classList.add("theme-switcher--menu");
+      dashboardNav.appendChild(wrapper);
+    } else {
+      document.body.prepend(wrapper);
+    }
   }
 
   fetch("/api/site-settings")

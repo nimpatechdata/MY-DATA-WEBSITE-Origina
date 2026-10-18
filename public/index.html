@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#070b1a" />
     <meta name="description" content="Buy affordable MTN, Telecel and AirtelTigo data bundles in Ghana with secure checkout and automated delivery from NImpatech." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://nimpatechdata.com/" />
@@ -16,6 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/modern.css" />
   </head>
   <body class="dashboard-page">
     <header class="dashboard-header">
@@ -24,8 +25,11 @@
           <span>NImpatech</span><strong> data bundles</strong>
         </a>
         <nav class="dashboard-nav" id="dashboard-nav" aria-label="Main navigation">
+          <button class="menu-back-link" id="menu-back-button" type="button">← Back</button>
           <a href="/checkout.html">New order</a>
           <a href="/agents.html">Sub-agents</a>
+          <a href="/account.html">Sign in</a>
+          <a href="/account.html#signup">Sign up</a>
           <a href="#network-orders">Networks</a>
           <a href="#track-order">Track order</a>
         </nav>
@@ -40,8 +44,8 @@
     <main class="dashboard-shell">
       <section class="welcome-banner" aria-labelledby="welcome-title">
         <div class="welcome-copy">
-          <h1 id="welcome-title">Good evening,<br />welcome back.</h1>
-          <p class="welcome-description">Your data business, in one place.</p>
+          <h1 id="welcome-title">Good morning,<br />welcome back.</h1>
+          <p class="welcome-description">Enjoy best data bundle deals here.</p>
           <nav class="welcome-actions" aria-label="Dashboard shortcuts">
             <a class="shortcut shortcut--primary" href="/checkout.html">＋ New order</a>
             <a class="shortcut" href="/agents.html">Sub-agent portal</a>
@@ -51,9 +55,9 @@
         </div>
         <div class="welcome-mark" aria-hidden="true"><span>GH</span></div>
         <div class="welcome-foot">
-          <span><i class="status-dot"></i> Paystack checkout</span>
-          <span><i class="status-dot"></i> Automated delivery</span>
-          <span><i class="status-dot"></i> Ghana cedi pricing</span>
+          <span><i class="status-dot"></i> Buy data</span>
+          <span><i class="status-dot"></i> Pay</span>
+          <span><i class="status-dot"></i> Delivered within 5 to 10 minutes</span>
         </div>
       </section>
 
@@ -97,6 +101,33 @@
           <div class="row"><span>Recipient</span><strong id="lookup-phone"></strong></div>
           <div class="row"><span>Amount</span><strong id="lookup-amount"></strong></div>
           <p id="lookup-delivery-message" class="orders-message"></p>
+        </div>
+      </section>
+
+      <section class="surface reviews-surface" aria-labelledby="reviews-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">CUSTOMER LOVE</p>
+            <h2 id="reviews-title">What customers say</h2>
+          </div>
+          <span class="reviews-rating" aria-label="Rated 4.9 out of 5">★ 4.9/5</span>
+        </div>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p>“The process was simple and my data arrived quickly. I’ll definitely order again.”</p>
+            <div class="review-author"><span class="review-avatar">AM</span><span><strong>Adwoa M.</strong><small>Verified customer</small></span></div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p>“I love how easy it is to choose my network and complete payment. Very convenient.”</p>
+            <div class="review-author"><span class="review-avatar review-avatar--blue">KB</span><span><strong>Kofi B.</strong><small>Verified customer</small></span></div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p>“Fast service and helpful support when I needed an update on my order.”</p>
+            <div class="review-author"><span class="review-avatar review-avatar--green">ES</span><span><strong>Efua S.</strong><small>Verified customer</small></span></div>
+          </article>
         </div>
       </section>
 

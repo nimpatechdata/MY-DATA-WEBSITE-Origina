@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2f4f7" />
+    <title>Customer account · NImpatech data bundles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/account.css" />
+  </head>
+  <body class="account-page">
+    <header class="dashboard-header">
+      <div class="dashboard-header__inner">
+        <a class="dashboard-brand" href="/"><span>NImpatech</span><strong> data bundles</strong></a>
+        <a class="header-action header-action--buy" href="/checkout.html">Buy data</a>
+      </div>
+    </header>
+    <main class="account-shell">
+      <section class="account-hero">
+        <p class="account-kicker">OPTIONAL CUSTOMER ACCOUNT</p>
+        <h1>Buy as a guest or keep your account handy.</h1>
+        <p>Sign up to get a personalized greeting and make it easier to return to NImpatech. You can always buy data without signing in.</p>
+      </section>
+      <section class="account-card" id="account-card">
+        <div class="account-tabs" role="tablist" aria-label="Customer account">
+          <button class="account-tab is-active" id="signin-tab" type="button" role="tab" aria-selected="true" aria-controls="signin-panel">Sign in</button>
+          <button class="account-tab" id="signup-tab" type="button" role="tab" aria-selected="false" aria-controls="signup-panel">Sign up</button>
+        </div>
+        <div class="account-panel" id="signin-panel" role="tabpanel" aria-labelledby="signin-tab">
+          <h2>Welcome back</h2>
+          <p class="account-intro">Sign in to see your name on the homepage.</p>
+          <form id="signin-form" class="account-form">
+            <label for="signin-email">Email address</label>
+            <input id="signin-email" name="email" type="email" autocomplete="username" required />
+            <label for="signin-password">Password</label>
+            <input id="signin-password" name="password" type="password" autocomplete="current-password" required />
+            <p class="account-message" id="signin-message" role="status"></p>
+            <button class="account-primary" type="submit">Sign in</button>
+          </form>
+        </div>
+        <div class="account-panel" id="signup-panel" role="tabpanel" aria-labelledby="signup-tab" hidden>
+          <h2>Create your account</h2>
+          <p class="account-intro">It’s free, and guest checkout remains available.</p>
+          <form id="signup-form" class="account-form">
+            <label for="signup-name">Full name</label>
+            <input id="signup-name" name="fullName" autocomplete="name" required maxlength="90" />
+            <label for="signup-email">Email address</label>
+            <input id="signup-email" name="email" type="email" autocomplete="email" required />
+            <label for="signup-password">Password</label>
+            <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+            <p class="account-message" id="signup-message" role="status"></p>
+            <button class="account-primary" type="submit">Create account</button>
+          </form>
+        </div>
+        <div class="account-signed-in" id="signed-in-panel" hidden>
+          <p class="account-kicker">YOU ARE SIGNED IN</p>
+          <h2 id="signed-in-name">Welcome back</h2>
+          <p class="account-intro" id="signed-in-email"></p>
+          <div class="account-actions"><a class="account-primary" href="/checkout.html">Buy data</a><button class="account-secondary" id="signout-button" type="button">Sign out</button></div>
+        </div>
+        <p class="account-guest-link">Want to buy without an account? <a href="/checkout.html">Continue as guest</a></p>
+      </section>
+    </main>
+    <script src="/js/account.js" defer></script>
+    <script src="/js/site-chrome.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+  </body>
+</html>

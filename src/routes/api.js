@@ -3,6 +3,7 @@ const checkoutController = require("../controllers/checkoutController");
 const agentController = require("../controllers/agentController");
 const webhookController = require("../controllers/webhookController");
 const adminController = require("../controllers/adminController");
+const customerController = require("../controllers/customerController");
 
 const router = express.Router();
 
@@ -29,6 +30,10 @@ router.get("/agents/dashboard", agentController.getDashboard);
 router.put("/agents/prices", agentController.savePrice);
 router.post("/agents/orders", agentController.createOrder);
 router.post("/agents/orders/confirm", agentController.confirmOrder);
+
+router.post("/customers/signup", customerController.signup);
+router.post("/customers/login", customerController.login);
+router.get("/customers/me", customerController.me);
 
 router.post("/webhooks/payment", webhookController.handlePaymentWebhook);
 
