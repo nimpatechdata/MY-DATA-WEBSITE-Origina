@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="NImpatech icon">
+  <defs>
+    <linearGradient id="favGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="55%" stop-color="#6c5cff"/>
+      <stop offset="100%" stop-color="#a06bff"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="18" fill="url(#favGrad)"/>
+  <path d="M20 47V17h7.4l15.1 19.3V17h7.9v30h-7.4L27.9 27.6V47z" fill="#ffffff"/>
+  <path d="M49 12l-8.6 13h6l-2.4 9.4L52.6 21h-6z" fill="#ffe066"/>
+</svg>

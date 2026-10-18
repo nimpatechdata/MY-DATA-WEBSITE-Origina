@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="NImpatech data bundles">
+  <defs>
+    <linearGradient id="ogBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1230"/>
+      <stop offset="60%" stop-color="#131a3f"/>
+      <stop offset="100%" stop-color="#1b1145"/>
+    </linearGradient>
+    <linearGradient id="ogBadge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="55%" stop-color="#6c5cff"/>
+      <stop offset="100%" stop-color="#a06bff"/>
+    </linearGradient>
+    <radialGradient id="ogGlow" cx="0.85" cy="0.1" r="0.7">
+      <stop offset="0%" stop-color="#6c5cff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#6c5cff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#ogBg)"/>
+  <rect width="1200" height="630" fill="url(#ogGlow)"/>
+
+  <!-- Logo badge -->
+  <g transform="translate(96 132) scale(1.6)">
+    <rect x="0" y="0" width="64" height="64" rx="18" fill="url(#ogBadge)"/>
+    <path d="M20 47V17h7.4l15.1 19.3V17h7.9v30h-7.4L27.9 27.6V47z" fill="#ffffff"/>
+    <path d="M49 12l-8.6 13h6l-2.4 9.4L52.6 21h-6z" fill="#ffe066"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="240" y="238" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="86" font-weight="800" fill="#ffffff">NImpatech</text>
+  <text x="242" y="292" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="40" font-weight="600" fill="#8f9dff" letter-spacing="2">DATA BUNDLES</text>
+
+  <!-- Headline -->
+  <text x="96" y="432" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" fill="#ffffff">Buy data bundles in seconds</text>
+
+  <!-- Trust strip -->
+  <g font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="30" font-weight="600" fill="#aab4e0">
+    <text x="96" y="520">MTN · Telecel · AirtelTigo</text>
+    <text x="470" y="520">Instant delivery</text>
+    <text x="710" y="520">Secure payments</text>
+  </g>
+
+  <rect x="96" y="556" width="1010" height="2" fill="#ffffff" fill-opacity="0.12"/>
+  <text x="96" y="600" font-family="DM Sans, Segoe UI, Arial, sans-serif" font-size="28" font-weight="600" fill="#6d7aa8">nimpatechdata.com</text>
+</svg>

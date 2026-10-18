@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="NImpatech logo">
+  <defs>
+    <linearGradient id="nimpGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="55%" stop-color="#6c5cff"/>
+      <stop offset="100%" stop-color="#a06bff"/>
+    </linearGradient>
+    <linearGradient id="nimpGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded badge -->
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#nimpGrad)"/>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#nimpGlow)"/>
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="16.25" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.5"/>
+
+  <!-- Signal arcs (data / connectivity) -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round">
+    <path d="M13 25.5a27 27 0 0 1 8.4-6.2"/>
+    <path d="M13 31.8a19.5 19.5 0 0 1 5.6-4.1"/>
+  </g>
+
+  <!-- Bold N monogram -->
+  <path d="M22.6 44.4V19.6h6.1l12.2 15.6V19.6h6.5v24.8h-6L29.1 28.9v15.5z" fill="#ffffff"/>
+
+  <!-- Delivery bolt accent -->
+  <path d="M44.9 15.2l-7.4 11.1h5.2l-2.1 8.1 7.4-11.1h-5.2z" fill="#ffe066" stroke="#1b1f4d" stroke-opacity="0.18" stroke-width="1" stroke-linejoin="round"/>
+</svg>
