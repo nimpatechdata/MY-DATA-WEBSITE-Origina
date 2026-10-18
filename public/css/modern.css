@@ -579,20 +579,31 @@ footer {
    Brand logo + trust signals
    ============================================================ */
 
-/* Header logo mark */
+/* Header logo mark — override legacy baseline alignment */
 .dashboard-brand {
-  display: inline-flex;
-  align-items: center;
+  display: inline-flex !important;
+  align-items: center !important;
   gap: 10px;
 }
 
 .dashboard-brand .brand-logo {
   width: 34px;
   height: 34px;
+  min-width: 34px;
+  flex: 0 0 34px;
   border-radius: 10px;
-  flex: 0 0 auto;
+  object-fit: contain;
+  display: block;
+  align-self: center;
   box-shadow: 0 4px 14px rgba(108, 92, 255, 0.45);
   transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.dashboard-brand__text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  line-height: 1;
 }
 
 .dashboard-brand:hover .brand-logo,
@@ -609,16 +620,20 @@ footer {
 
 /* Classic-page logo (checkout / agents / account) */
 .logo {
-  display: inline-flex;
-  align-items: center;
+  display: inline-flex !important;
+  align-items: center !important;
   gap: 9px;
 }
 
 .logo .brand-logo {
   width: 30px;
   height: 30px;
+  min-width: 30px;
+  flex: 0 0 30px;
   border-radius: 9px;
-  flex: 0 0 auto;
+  object-fit: contain;
+  display: block;
+  align-self: center;
   box-shadow: 0 4px 14px rgba(108, 92, 255, 0.4);
 }
 
@@ -678,5 +693,5 @@ footer {
 
 @media (max-width: 560px) {
   .trust-strip li { font-size: 11px; padding: 7px 11px; }
-  .dashboard-brand .brand-logo { width: 30px; height: 30px; }
+  .dashboard-brand .brand-logo { width: 30px; height: 30px; min-width: 30px; flex: 0 0 30px; }
 }
