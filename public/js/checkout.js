@@ -52,7 +52,7 @@ function renderNetworks() {
   });
 }
 
-function renderBundles() {
+function renderSelectedBundle() {
   const network = state.catalog.networks.find((item) => item.id === state.network);
   const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
@@ -75,6 +75,44 @@ function renderBundles() {
     option.appendChild(button);
     if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
     bundleBox.appendChild(option);
+  });
+}
+
+function renderBundles() {
+  const recipientDetails = document.querySelector(".recipient-details");
+  const heading = document.getElementById("bundle-heading");
+  heading.textContent = "2. Choose a bundle by network";
+  heading.className = "bundle-heading";
+  heading.removeAttribute("data-network");
+  bundleBox.innerHTML = "";
+  const networks = [...state.catalog.networks].sort((a, b) => a.id === state.network ? -1 : b.id === state.network ? 1 : 0);
+
+  networks.forEach((network) => {
+    const group = document.createElement("section");
+    group.className = `bundle-network-group bundle-network-group--${network.id} ${network.id === state.network ? "is-selected" : ""}`;
+    group.innerHTML = `<div class="bundle-network-heading"><h3>${network.name} bundles</h3><span>${network.id === state.network ? "Selected network" : `Choose ${network.name}`}</span></div>`;
+    const choices = document.createElement("div");
+    choices.className = "choices bundle-network-choices";
+    (state.catalog.bundles[network.id] || []).forEach((bundle) => {
+      const option = document.createElement("div");
+      option.className = `bundle-option ${state.bundleId === bundle.id ? "selected" : ""}`;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `bundle ${state.bundleId === bundle.id ? "active" : ""}`;
+      button.innerHTML = `<strong>${bundle.size}</strong><small>GHS ${bundle.priceGhs} · ${bundle.validity}</small>`;
+      button.addEventListener("click", () => {
+        state.network = network.id;
+        state.bundleId = bundle.id;
+        renderNetworks();
+        renderBundles();
+        renderSummary();
+      });
+      option.appendChild(button);
+      if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
+      choices.appendChild(option);
+    });
+    group.appendChild(choices);
+    bundleBox.appendChild(group);
   });
 }
 

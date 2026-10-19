@@ -435,6 +435,13 @@ input:focus {
 .mtn-pick--popular { border-color: rgba(255, 224, 102, .55); background: linear-gradient(150deg, rgba(255,224,102,.18), rgba(255,255,255,.045)); }
 .mtn-pick--power::after { background: rgba(112, 216, 255, .16); }
 .mtn-pick--max::after { background: rgba(98, 227, 156, .16); }
+.bundle-network-group { margin-top: 22px; padding: 16px; border: 1px solid rgba(255,255,255,.09); border-radius: 16px; background: rgba(255,255,255,.025); }
+.bundle-network-group.is-selected { border-color: rgba(255,224,102,.45); background: rgba(255,224,102,.055); }
+.bundle-network-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.bundle-network-heading h3 { margin: 0; color: var(--mod-text); font-family: "Space Grotesk", sans-serif; font-size: 19px; }
+.bundle-network-heading span { color: var(--mod-muted); font-size: 12px; font-weight: 700; }
+.bundle-network-group.is-selected .bundle-network-heading h3 { color: #ffe066; }
+.bundle-network-choices { margin: 0; }
 
 @media (max-width: 820px) {
   .mtn-picks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
