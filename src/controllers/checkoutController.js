@@ -48,7 +48,11 @@ function publicOrder(order) {
           providerStatus: order.delivery.providerStatus,
           delivered: Boolean(order.delivery.delivered),
           failed: Boolean(order.delivery.failed),
-          message: order.delivery.message
+          message: order.delivery.message,
+          startedAt: order.delivery.startedAt || order.createdAt,
+          deliveredAt: order.delivery.deliveredAt || null,
+          estimatedMinutes: order.delivery.estimatedMinutes || null,
+          estimatedDeliveryAt: order.delivery.estimatedDeliveryAt || null
         }
       : null
   };
@@ -223,6 +227,7 @@ async function confirmPayment(req, res) {
     }
 
     let delivery;
+    const deliveryStartedAt = new Date().toISOString();
     try {
       delivery = await vtuService.deliverBundle(updatedOrder);
     } catch (error) {
@@ -233,6 +238,7 @@ async function confirmPayment(req, res) {
           provider: process.env.VTU_PROVIDER || "vtu",
           delivered: false,
           failed: providerRejected,
+          startedAt: deliveryStartedAt,
           message: providerRejected
             ? error.message || "The data provider rejected delivery. Contact support before retrying."
             : "Payment is confirmed, but data delivery needs a status check. Contact support before retrying.",
@@ -252,6 +258,7 @@ async function confirmPayment(req, res) {
     const estimatedMinutes = Number(process.env.DATAMART_DELIVERY_ESTIMATE_MINUTES || 5);
     const deliveryWithEstimate = {
       ...delivery,
+      startedAt: delivery.startedAt || deliveryStartedAt,
       estimatedMinutes: Number.isFinite(estimatedMinutes) && estimatedMinutes > 0 ? estimatedMinutes : 5,
       estimatedDeliveryAt: delivery.delivered
         ? null

@@ -2,6 +2,16 @@ const params = new URLSearchParams(window.location.search);
 const orderId = params.get("orderId");
 const demo = params.get("demo");
 const reference = params.get("reference") || params.get("trxref") || orderId;
+let latestOrder = null;
+function renderDeliveryTime(order) {
+  latestOrder = order;
+  const started = new Date(order.delivery?.startedAt || order.createdAt || order.updatedAt).getTime();
+  const finished = order.delivery?.deliveredAt ? new Date(order.delivery.deliveredAt).getTime() : Date.now();
+  const element = document.getElementById("delivery-time");
+  if (!element || !Number.isFinite(started)) return;
+  const seconds = Math.max(0, Math.floor((finished - started) / 1000));
+  element.textContent = order.status === "delivered" ? `Delivered in ${Math.floor(seconds / 60)}m ${seconds % 60}s` : `In progress · ${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+}
 
 async function run() {
   if (!orderId) {
@@ -48,6 +58,11 @@ async function run() {
   document.getElementById("eta").textContent = order.delivery?.estimatedDeliveryAt 
     ? new Date(order.delivery.estimatedDeliveryAt).toLocaleTimeString("en-GH", { hour: '2-digit', minute: '2-digit' }) 
     : "Processing...";
+  renderDeliveryTime(order);
+  setInterval(async () => {
+    const latestResponse = await fetch(`/api/orders/${encodeURIComponent(orderId)}`, { headers: { Accept: "application/json" } });
+    if (latestResponse.ok) renderDeliveryTime(await latestResponse.json());
+  }, 15_000);
 
   if (order.status === "delivered") {
     document.getElementById("title").textContent = "Data sent";
