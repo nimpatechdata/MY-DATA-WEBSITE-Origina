@@ -53,6 +53,7 @@ function renderNetworks() {
 
 function renderBundles() {
   const network = state.catalog.networks.find((item) => item.id === state.network);
+  const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
   heading.textContent = `2. ${network?.name || "Selected network"} bundles`;
   heading.className = `bundle-heading network-${state.network}`;
@@ -71,6 +72,7 @@ function renderBundles() {
       renderSummary();
     });
     option.appendChild(button);
+    if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
     bundleBox.appendChild(option);
   });
 }

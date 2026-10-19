@@ -288,6 +288,7 @@ label {
 .bundle-option.selected { padding: 8px; border: 2px solid var(--green); border-radius: 18px; background: color-mix(in srgb, var(--card) 94%, var(--green)); }
 .bundle-option.selected .bundle { border-color: var(--green); }
 .recipient-details { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--card) 92%, var(--green)); }
+.bundle-option .recipient-details { margin-top: 0; }
 .recipient-details .checkout-step { color: var(--text); }
 .recipient-details .primary { width: 100%; margin-top: 8px; }
 .selection-hint { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
