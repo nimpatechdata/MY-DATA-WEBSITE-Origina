@@ -5,6 +5,7 @@ const webhookController = require("../controllers/webhookController");
 const adminController = require("../controllers/adminController");
 const customerController = require("../controllers/customerController");
 const trackingController = require("../controllers/trackingController");
+const siteUpdatesController = require("../controllers/siteUpdatesController");
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.get("/catalog", async (_req, res) => {
   res.json(await checkoutController.catalog());
 });
 router.get("/site-settings", adminController.siteSettings);
+router.get("/site-updates", siteUpdatesController.getSiteUpdates);
 
 router.post("/checkout", checkoutController.createCheckout);
 router.get("/orders/:id", checkoutController.getOrder);

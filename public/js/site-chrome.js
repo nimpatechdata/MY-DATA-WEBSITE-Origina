@@ -61,7 +61,7 @@
       <a href="https://whatsapp.com/channel/0029VbDe7YwIHphPAs75Yk0y" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a>
       <a class="site-footer__whatsapp" href="https://wa.me/233533323096" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       <a href="#support-widget" data-open-support>Contact</a>
-      <a href="/#track-order">Track Order</a>
+      <a href="/#live-updates">Live Updates</a>
       <a href="/agents.html">Become a Reseller</a>
       <a href="/agents.html">Reseller Registration</a>
       <a href="/agent-dashboard.html">Reseller Login</a>

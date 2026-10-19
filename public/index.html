@@ -38,10 +38,10 @@
           <a href="/account.html">Sign in</a>
           <a href="/account.html#signup">Sign up</a>
           <a href="#network-orders">Networks</a>
-          <a href="#track-order">Track order</a>
+          <a href="#live-updates">Live updates</a>
         </nav>
         <div class="header-actions">
-          <a class="header-action" href="#track-order" aria-label="Track an order" title="Track order">◷</a>
+          <a class="header-action" href="#live-updates" aria-label="Live updates" title="Live updates">◷</a>
           <a class="header-action header-action--buy" href="/checkout.html">Buy data</a>
           <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="dashboard-nav">☰</button>
         </div>
@@ -56,7 +56,7 @@
           <nav class="welcome-actions" aria-label="Dashboard shortcuts">
             <a class="shortcut shortcut--primary" href="/checkout.html">＋ New order</a>
             <a class="shortcut" href="/agents.html">Sub-agent portal</a>
-            <a class="shortcut" href="#track-order">Track an order</a>
+            <a class="shortcut" href="#live-updates">Live updates</a>
             <a class="shortcut shortcut--quiet" href="#network-orders">Networks</a>
           </nav>
         </div>
@@ -119,6 +119,13 @@
         </div>
       </section>
 
+      <section class="surface live-updates" id="live-updates" aria-labelledby="live-updates-title">
+        <div class="section-heading"><div><p class="section-kicker">LIVE SERVICE UPDATES</p><h2 id="live-updates-title">Delivery updates for everyone</h2></div><span class="live-indicator"><i></i> Live</span></div>
+        <p class="lead">Stay informed while you shop. The platform will post safe, platform-wide delivery updates here.</p>
+        <div id="site-updates-list" class="site-updates-list"><p class="orders-message">Loading the latest service update...</p></div>
+        <p class="site-updates-refresh" id="site-updates-refresh">Updates refresh automatically.</p>
+      </section>
+
       <section class="surface reviews-surface" aria-labelledby="reviews-title">
         <div class="section-heading">
           <div>
@@ -149,7 +156,7 @@
       <footer class="site-footer"></footer>
     </main>
     <script src="/js/theme.js" defer></script>
-    <script src="/js/order-activity.js" defer></script>
+    <script src="/js/site-updates.js" defer></script>
     <script src="/js/site-chrome.js" defer></script>
     <script src="/js/support-widget.js" defer></script>
   </body>
