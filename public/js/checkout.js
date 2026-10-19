@@ -129,9 +129,9 @@ function renderBundles() {
   state.catalog.networks.forEach((network) => {
     const column = document.createElement("section");
     column.className = `network-bundle-column network-bundle-column--${network.id} ${network.id === state.network ? "is-selected" : ""}`;
-    column.innerHTML = `<div class="network-bundle-column__heading"><h3>${network.name}</h3><span>${network.id === state.network ? "Selected" : "Choose above"}</span></div>`;
+    column.innerHTML = `<div class="network-bundle-column__heading"><h3>${network.name}</h3><span>${network.id === state.network ? "Selected" : "Available"}</span></div>`;
 
-    if (network.id === state.network) {
+    if (true) {
       const choices = document.createElement("div");
       choices.className = "choices network-bundle-column__choices";
       (state.catalog.bundles[network.id] || []).forEach((bundle) => {
@@ -142,6 +142,7 @@ function renderBundles() {
         button.className = `bundle ${state.bundleId === bundle.id ? "active" : ""}`;
         button.innerHTML = `<strong>${bundle.size}</strong><small>GHS ${bundle.priceGhs} · ${bundle.validity}</small>`;
         button.addEventListener("click", () => {
+          state.network = network.id;
           state.bundleId = bundle.id;
           renderBundles();
           renderSummary();
@@ -169,7 +170,6 @@ async function loadCatalog() {
   state.bundleId = availableBundles.some((bundle) => bundle.id === requestedBundle)
     ? requestedBundle
     : availableBundles[0]?.id;
-  renderNetworks();
   renderBundles();
   renderSummary();
 }
