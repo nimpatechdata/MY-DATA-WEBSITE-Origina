@@ -1,4 +1,10 @@
 (function () {
+  try {
+    const key = "nimpatech-visitor-id";
+    let visitorId = localStorage.getItem(key);
+    if (!visitorId) { visitorId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`; localStorage.setItem(key, visitorId); }
+    fetch("/api/analytics/visit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ visitorId, path: window.location.pathname }) }).catch(() => {});
+  } catch (_) {}
   function goBack() {
     const sameSiteReferrer = document.referrer.startsWith(window.location.origin);
     if (sameSiteReferrer && window.history.length > 1) window.history.back();

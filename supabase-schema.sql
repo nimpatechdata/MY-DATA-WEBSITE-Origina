@@ -53,6 +53,34 @@ revoke all on public.storefront_admin_settings from anon, authenticated;
 
 grant all on public.storefront_admin_settings to service_role;
 
+create table if not exists public.storefront_visits (
+  id uuid primary key default gen_random_uuid(),
+  visitor_hash text not null,
+  path text not null default '/',
+  visited_at timestamptz not null default now()
+);
+create index if not exists storefront_visits_visited_at_idx on public.storefront_visits (visited_at desc);
+create index if not exists storefront_visits_hash_visited_at_idx on public.storefront_visits (visitor_hash, visited_at desc);
+alter table public.storefront_visits enable row level security;
+revoke all on public.storefront_visits from anon, authenticated;
+grant all on public.storefront_visits to service_role;
+
+create table if not exists public.storefront_blog_posts (
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique,
+  title text not null,
+  excerpt text not null default '',
+  content text not null,
+  published boolean not null default false,
+  published_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists storefront_blog_posts_published_idx on public.storefront_blog_posts (published, published_at desc);
+alter table public.storefront_blog_posts enable row level security;
+revoke all on public.storefront_blog_posts from anon, authenticated;
+grant all on public.storefront_blog_posts to service_role;
+
 alter table public.storefront_orders enable row level security;
 revoke all on public.storefront_orders from anon, authenticated;
 grant all on public.storefront_orders to service_role;

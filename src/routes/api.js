@@ -6,6 +6,8 @@ const adminController = require("../controllers/adminController");
 const customerController = require("../controllers/customerController");
 const trackingController = require("../controllers/trackingController");
 const siteUpdatesController = require("../controllers/siteUpdatesController");
+const analyticsController = require("../controllers/analyticsController");
+const blogController = require("../controllers/blogController");
 
 const router = express.Router();
 
@@ -18,6 +20,8 @@ router.get("/catalog", async (_req, res) => {
 });
 router.get("/site-settings", adminController.siteSettings);
 router.get("/site-updates", siteUpdatesController.getSiteUpdates);
+router.post("/analytics/visit", analyticsController.recordVisit);
+router.get("/blog", blogController.listPublished);
 
 router.post("/checkout", checkoutController.createCheckout);
 router.get("/orders/:id", checkoutController.getOrder);
@@ -54,5 +58,10 @@ router.put("/admin/prices", adminController.requireAdmin, adminController.update
 router.put("/admin/password", adminController.requireAdmin, adminController.changePassword);
 router.get("/admin/settings", adminController.requireAdmin, adminController.siteSettings);
 router.put("/admin/settings", adminController.requireAdmin, adminController.updateSiteSettings);
+router.get("/admin/analytics", adminController.requireAdmin, analyticsController.getAnalytics);
+router.get("/admin/blog", adminController.requireAdmin, blogController.listAdmin);
+router.post("/admin/blog", adminController.requireAdmin, blogController.create);
+router.put("/admin/blog/:id", adminController.requireAdmin, blogController.update);
+router.delete("/admin/blog/:id", adminController.requireAdmin, blogController.remove);
 
 module.exports = router;

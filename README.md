@@ -93,6 +93,14 @@ Storefront orders and sub-agent activity both use Supabase. To set up persistent
 
 The storefront order table is protected by row-level security and server-only service-role access. Order payment and delivery states persist across restarts. `processing`, `delivery_review`, and `delivery_failed` orders remain available for reconciliation; do not blindly resend a bundle when supplier acceptance is uncertain.
 
+## Visitor analytics and blog
+
+Public pages anonymously record visits through `POST /api/analytics/visit`; visitor analytics does not store customer phone numbers or emails. The private admin dashboard exposes current hour, day, month, and year counts through `GET /api/admin/analytics`. Set `VISITOR_ANALYTICS_SECRET` in production to keep visitor IDs unlinkable.
+
+The homepage reads published posts from `GET /api/blog`. The admin dashboard provides a blog editor at `/admin` for creating, editing, publishing, and deleting posts. The first connectivity guide is seeded automatically after the `storefront_blog_posts` table exists.
+
+Run the latest `supabase-schema.sql` in the Supabase SQL Editor before using analytics or blog management; it creates the server-only `storefront_visits` and `storefront_blog_posts` tables.
+
 
 ## Project folders
 

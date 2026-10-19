@@ -1,4 +1,5 @@
 const trackingScript = document.createElement("script"); trackingScript.src = "/js/tracking-dashboard.js"; document.head.appendChild(trackingScript);
+const contentScript = document.createElement("script"); contentScript.src = "/js/admin-content.js"; document.head.appendChild(contentScript);
 const loginPanel = document.getElementById("login-panel");
 const dashboard = document.getElementById("dashboard");
 const loginError = document.getElementById("login-error");
