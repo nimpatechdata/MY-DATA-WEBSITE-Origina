@@ -390,10 +390,25 @@ input:focus {
   color: #62e39c !important;
 }
 
-/* Larger, calmer reading scale for customer content and the journal. */
-.site-footer { font-size: 14px !important; }
-.site-footer__links { gap: 13px; }
-.site-footer__links a { font-size: 14px !important; }
+/* Larger footer links with a comfortable vertical finish beneath WhatsApp. */
+.site-footer {
+  min-height: 285px;
+  padding: 30px 20px 54px !important;
+  font-size: 15px !important;
+}
+.site-footer__links {
+  gap: 17px;
+  margin-bottom: 24px;
+}
+.site-footer__links a {
+  font-size: 17px !important;
+  line-height: 1.35;
+}
+.site-footer > span {
+  display: block;
+  font-size: 15px;
+  line-height: 1.5;
+}
 .blog-surface { margin-top: 22px; }
 .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 18px; }
 .blog-card { padding: 22px; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.055); }
