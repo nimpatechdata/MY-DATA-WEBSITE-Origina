@@ -119,7 +119,7 @@ function renderAllBundles() {
 function renderBundles() {
   const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
-  heading.textContent = "2. Choose a bundle";
+  heading.textContent = "";
   heading.className = "bundle-heading";
   heading.removeAttribute("data-network");
   bundleBox.innerHTML = "";
