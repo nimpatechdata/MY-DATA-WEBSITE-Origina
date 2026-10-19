@@ -61,6 +61,18 @@ Set these values in `.env`:
 
 Datamart orders are created with `POST /api/developer/purchase`. MTN maps to `YELLO`, Telecel to `TELECEL`, and AirtelTigo to `AT_PREMIUM`; purchases use the provider wallet and `sam-` reference prefix. The status endpoint must be confirmed with Datamart support/API documentation before enabling automatic refresh; do not guess the URL in production.
 
+### All-time tracking dashboard
+
+The private admin page (`/admin`) includes an all-time tracking dashboard. It calls `GET /api/admin/tracking`, which requires the existing admin cookie and proxies the request server-side; Datamart credentials are never sent to the browser. Set the authenticated Datamart tracking endpoint in the server environment:
+
+```env
+DATAMART_TRACKING_URL=https://api.datamartgh.shop/api/developer/your-tracking-endpoint
+DATAMART_TRACKING_LIMIT=1000
+DATAMART_TRACKING_TIMEOUT_MS=10000
+```
+
+The proxy sends `Authorization: Bearer DATAMART_API_KEY` and the existing `X-API-Key` / `X-API-Secret` headers, then returns normalized metrics and tracking rows. Confirm the exact tracking URL and authentication requirements with Datamart before enabling it in production. The dashboard refreshes every 45 seconds and displays a provider error banner if the request fails.
+
 Ready-to-edit files:
 
 - `src/services/paymentService.js` — start payment and verify payment

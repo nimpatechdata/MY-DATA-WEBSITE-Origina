@@ -302,6 +302,20 @@ label {
 .status-pill { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(244,196,0,.18); color: var(--text); font-size: 11px; font-weight: 700; }
 .status-pill.delivered { background: rgba(24,160,88,.18); }
 .status-pill.delivery_failed, .status-pill.payment_failed { background: rgba(220,50,50,.18); }
+.tracking-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.tracking-metrics article { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.03); }
+.tracking-metrics span { display: block; color: var(--muted); font-size: 12px; }
+.tracking-metrics strong { display: block; margin-top: 6px; font-size: 24px; }
+.tracking-updated { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.tracking-error { margin: 12px 0; padding: 12px 14px; border: 1px solid rgba(220,50,50,.5); border-radius: 10px; color: #ffb4b4; background: rgba(220,50,50,.12); }
+.tracking-badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(244,196,0,.18); }
+.tracking-badge.success { color: #78e6ad; background: rgba(24,160,88,.18); }
+.tracking-badge.failed { color: #ff9e9e; background: rgba(220,50,50,.18); }
+.tracking-duration { white-space: nowrap; font-size: 12px; }
+.tracking-duration.pending { color: var(--yellow, #f4c400); }
+.tracking-duration.success { color: #78e6ad; }
+.tracking-duration.failed { color: #ff9e9e; }
+@media (max-width: 700px) { .tracking-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tracking-updated { white-space: normal; text-align: right; } }
 code { font-size: 11px; color: var(--muted); }
 .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
 .price-editor { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--text); }

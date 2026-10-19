@@ -4,6 +4,7 @@ const agentController = require("../controllers/agentController");
 const webhookController = require("../controllers/webhookController");
 const adminController = require("../controllers/adminController");
 const customerController = require("../controllers/customerController");
+const trackingController = require("../controllers/trackingController");
 
 const router = express.Router();
 
@@ -44,6 +45,7 @@ router.post("/admin/forgot-password", adminController.forgotPassword);
 router.post("/admin/reset-password", adminController.resetPassword);
 router.post("/admin/logout", adminController.logout);
 router.get("/admin/activity", adminController.requireAdmin, adminController.list);
+router.get("/admin/tracking", adminController.requireAdmin, trackingController.getTracking);
 router.get("/admin/prices", adminController.requireAdmin, adminController.prices);
 router.put("/admin/prices", adminController.requireAdmin, adminController.updatePrice);
 router.put("/admin/password", adminController.requireAdmin, adminController.changePassword);
