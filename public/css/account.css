@@ -26,3 +26,12 @@
 .account-guest-link { margin: 22px 0 0; padding-top: 17px; border-top: 1px solid #edf0f3; color: #8792a1; font-size: 11px; text-align: center; }
 .account-guest-link a { color: #9a6b00; font-weight: 800; }
 @media (max-width: 600px) { .account-shell { margin-top: 14px; } .account-hero { padding: 24px 20px; } .account-hero h1 { font-size: 28px; } .account-card { padding: 19px 16px; } }
+.customer-orders { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--account-line, rgba(255,255,255,.12)); }
+.customer-orders h3 { margin: 0; }
+.customer-order { display: grid; grid-template-columns: 1.5fr auto auto auto; align-items: center; gap: 12px; margin-top: 10px; padding: 14px; border: 1px solid var(--account-line, rgba(255,255,255,.12)); border-radius: 12px; }
+.customer-order small, .customer-order code { display: block; margin-top: 5px; color: var(--muted, #9aa4c4); font-size: 11px; }
+.customer-order-status { padding: 4px 8px; border-radius: 999px; background: rgba(244,196,0,.18); font-size: 11px; font-weight: 700; }
+.customer-order-status.delivered { background: rgba(24,160,88,.18); color: #78e6ad; }
+.customer-order-status.delivery_failed { background: rgba(220,50,50,.18); color: #ff9e9e; }
+.customer-order-time { white-space: nowrap; font-size: 12px; }
+@media (max-width: 700px) { .customer-order { grid-template-columns: 1fr auto; } .customer-order code { grid-column: 1 / -1; } }

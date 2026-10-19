@@ -1,4 +1,5 @@
 const supabase = require("../services/supabaseClient");
+const orders = require("../store/orders");
 
 function httpError(message, statusCode) {
   const error = new Error(message);
@@ -83,4 +84,35 @@ const me = safeHandler(async (req, res) => {
   res.json({ user: publicUser(data.user) });
 }, "Could not load your account.");
 
-module.exports = { signup, login, me };
+const listOrders = safeHandler(async (req, res) => {
+  const token = getBearerToken(req);
+  if (!token) throw httpError("Sign in to continue.", 401);
+  const admin = supabase.getAdminClient();
+  const { data, error } = await admin.auth.getUser(token);
+  if (error || !data.user) throw httpError("Your session has expired. Please sign in again.", 401);
+  const allOrders = await orders.listOrders();
+  const customerEmail = String(data.user.email || "").toLowerCase();
+  const customerOrders = allOrders.filter((order) => String(order.email || "").toLowerCase() === customerEmail).map((order) => ({
+    id: order.id,
+    reference: order.payment?.reference || order.id,
+    status: order.status,
+    network: order.networkName || order.network,
+    size: order.size,
+    validity: order.validity,
+    priceGhs: order.priceGhs,
+    phone: order.phone,
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt,
+    delivery: order.delivery ? {
+      providerStatus: order.delivery.providerStatus || null,
+      delivered: Boolean(order.delivery.delivered),
+      failed: Boolean(order.delivery.failed),
+      startedAt: order.delivery.startedAt || order.createdAt,
+      deliveredAt: order.delivery.deliveredAt || null,
+      message: order.delivery.message || null
+    } : null
+  }));
+  return res.json({ orders: customerOrders });
+}, "Could not load your orders.");
+
+module.exports = { signup, login, me, listOrders };

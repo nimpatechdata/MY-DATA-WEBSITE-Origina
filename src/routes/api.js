@@ -35,6 +35,7 @@ router.post("/agents/orders/confirm", agentController.confirmOrder);
 router.post("/customers/signup", customerController.signup);
 router.post("/customers/login", customerController.login);
 router.get("/customers/me", customerController.me);
+router.get("/customers/orders", customerController.listOrders);
 
 router.post("/webhooks/payment", webhookController.handlePaymentWebhook);
 

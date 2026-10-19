@@ -32,6 +32,29 @@ function showSignedIn(user) {
   signedInPanel.hidden = false;
   document.getElementById("signed-in-name").textContent = `Welcome, ${user.name}`;
   document.getElementById("signed-in-email").textContent = user.email;
+  loadCustomerOrders();
+}
+
+let customerOrders = [];
+function customerDeliveryTime(order) {
+  const started = new Date(order.delivery?.startedAt || order.createdAt || order.updatedAt).getTime();
+  const finished = order.delivery?.deliveredAt ? new Date(order.delivery.deliveredAt).getTime() : Date.now();
+  if (!Number.isFinite(started)) return "—";
+  const seconds = Math.max(0, Math.floor((finished - started) / 1000));
+  return order.status === "delivered" ? `Delivered in ${Math.floor(seconds / 60)}m ${seconds % 60}s` : `In progress · ${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+}
+function renderCustomerOrders() {
+  const target = document.getElementById("customer-orders-list");
+  target.innerHTML = customerOrders.length ? customerOrders.map((order) => `<article class="customer-order"><div><strong>${order.size || "Data bundle"} · ${order.network || "Network"}</strong><small>${order.phone || ""} · ${new Date(order.createdAt).toLocaleString()}</small></div><span class="customer-order-status ${order.status}">${order.status === "delivered" ? "Delivered" : order.status === "delivery_failed" ? "Needs support" : "Processing"}</span><strong class="customer-order-time">${customerDeliveryTime(order)}</strong><code>${String(order.reference).slice(0, 18)}…</code></article>`).join("") : '<p class="account-message">No orders are linked to this account yet.</p>';
+}
+async function loadCustomerOrders() {
+  const session = getCustomerSession();
+  if (!session?.accessToken) return;
+  const response = await fetch("/api/customers/orders", { headers: { Authorization: `Bearer ${session.accessToken}`, Accept: "application/json" } });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) { document.getElementById("customer-orders-message").textContent = result.error || "Could not load your orders."; return; }
+  customerOrders = result.orders || [];
+  renderCustomerOrders();
 }
 
 async function submitAccountForm(event, endpoint, messageId) {
@@ -62,3 +85,5 @@ document.getElementById("signout-button").addEventListener("click", () => { loca
 const existingSession = getCustomerSession();
 if (existingSession?.user) showSignedIn(existingSession.user);
 else if (window.location.hash === "#signup") showTab("signup");
+setInterval(() => { if (!signedInPanel.hidden) { renderCustomerOrders(); loadCustomerOrders().catch(() => {}); } }, 15_000);
+setInterval(() => { if (!signedInPanel.hidden && customerOrders.length) renderCustomerOrders(); }, 1_000);
