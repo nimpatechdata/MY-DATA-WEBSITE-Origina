@@ -1,4 +1,4 @@
-module.exports = {
+const bundles = {
   mtn: [
     { id: "mtn-1gb", size: "1GB", validity: "3 months", priceGhs: 4.9 },
     { id: "mtn-2gb", size: "2GB", validity: "3 months", priceGhs: 9.7 },
@@ -45,3 +45,9 @@ module.exports = {
     { id: "at-50gb", size: "50GB", validity: "3 months", priceGhs: 220 }
   ]
 };
+
+for (const networkBundles of Object.values(bundles)) {
+  for (const bundle of networkBundles) bundle.validity = "Unlimited";
+}
+
+module.exports = bundles;
