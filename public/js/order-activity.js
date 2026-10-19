@@ -11,7 +11,9 @@ function deliveryTime(order) {
 }
 function renderTrackedOrder(order) {
   document.getElementById("lookup-status").textContent = statusLabels[order.status] || "Processing";
-  document.getElementById("lookup-network").textContent = order.networkName || order.network || "—";
+  const initialNetwork = document.getElementById("lookup-network");
+  initialNetwork.textContent = order.networkName || order.network || "—";
+  initialNetwork.dataset.network = order.network || "";
   document.getElementById("lookup-bundle").textContent = `${order.size || "—"}${order.validity ? ` · ${order.validity}` : ""}`;
   document.getElementById("lookup-phone").textContent = order.phone || "—";
   document.getElementById("lookup-amount").textContent = `GHS ${Number(order.priceGhs || 0).toFixed(2)}`;
@@ -48,7 +50,9 @@ lookupForm.addEventListener("submit", async (event) => {
     }
 
     document.getElementById("lookup-status").textContent = statusLabels[result.status] || "Processing";
-    document.getElementById("lookup-network").textContent = result.networkName || result.network || "—";
+    const networkLabel = document.getElementById("lookup-network");
+    networkLabel.textContent = result.networkName || result.network || "—";
+    networkLabel.dataset.network = result.network || "";
     document.getElementById("lookup-bundle").textContent = `${result.size || "—"}${result.validity ? ` · ${result.validity}` : ""}`;
     document.getElementById("lookup-phone").textContent = result.phone || "—";
     document.getElementById("lookup-amount").textContent = `GHS ${Number(result.priceGhs || 0).toFixed(2)}`;

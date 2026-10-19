@@ -20,7 +20,9 @@ function selectedBundle() {
 function renderSummary() {
   const bundle = selectedBundle();
   const network = state.catalog.networks.find((item) => item.id === state.network);
-  document.getElementById("sum-network").textContent = network ? network.name : "—";
+  const summaryNetwork = document.getElementById("sum-network");
+  summaryNetwork.textContent = network ? network.name : "—";
+  summaryNetwork.dataset.network = network?.id || "";
   document.getElementById("sum-bundle").textContent = bundle ? bundle.size : "—";
   document.getElementById("sum-validity").textContent = bundle ? bundle.validity : "—";
   document.getElementById("sum-phone").textContent = phoneInput.value || "—";
@@ -35,7 +37,8 @@ function renderNetworks() {
   state.catalog.networks.forEach((network) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `choice ${network.id} ${state.network === network.id ? "active" : ""}`;
+    button.className = `choice ${network.id} network-${network.id} ${state.network === network.id ? "active" : ""}`;
+    button.dataset.network = network.id;
     button.innerHTML = `<strong>${network.name}</strong><small>${network.prefixes.join(", ")}</small>`;
     button.addEventListener("click", () => {
       state.network = network.id;

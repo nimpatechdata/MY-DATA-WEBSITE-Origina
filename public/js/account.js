@@ -45,7 +45,7 @@ function customerDeliveryTime(order) {
 }
 function renderCustomerOrders() {
   const target = document.getElementById("customer-orders-list");
-  target.innerHTML = customerOrders.length ? customerOrders.map((order) => `<article class="customer-order"><div><strong>${order.size || "Data bundle"} · ${order.network || "Network"}</strong><small>${order.phone || ""} · ${new Date(order.createdAt).toLocaleString()}</small></div><span class="customer-order-status ${order.status}">${order.status === "delivered" ? "Delivered" : order.status === "delivery_failed" ? "Needs support" : "Processing"}</span><strong class="customer-order-time">${customerDeliveryTime(order)}</strong><code>${String(order.reference).slice(0, 18)}…</code></article>`).join("") : '<p class="account-message">No orders are linked to this account yet.</p>';
+  target.innerHTML = customerOrders.length ? customerOrders.map((order) => `<article class="customer-order"><div><strong>${order.size || "Data bundle"} · <span class="network-${order.network || ""}">${order.network || "Network"}</span></strong><small>${order.phone || ""} · ${new Date(order.createdAt).toLocaleString()}</small></div><span class="customer-order-status ${order.status}">${order.status === "delivered" ? "Delivered" : order.status === "delivery_failed" ? "Needs support" : "Processing"}</span><strong class="customer-order-time">${customerDeliveryTime(order)}</strong><code>${String(order.reference).slice(0, 18)}…</code></article>`).join("") : '<p class="account-message">No orders are linked to this account yet.</p>';
 }
 async function loadCustomerOrders() {
   const session = getCustomerSession();

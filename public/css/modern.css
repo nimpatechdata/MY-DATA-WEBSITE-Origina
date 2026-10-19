@@ -15,6 +15,9 @@
   --mod-accent: #6c5cff;
   --mod-accent-2: #00d9ff;
   --mod-glow: rgba(108, 92, 255, 0.35);
+  --network-mtn: #ffca00;
+  --network-telecel: #e51e2a;
+  --network-airteltigo: #1470c8;
   --radius: 18px;
 }
 
@@ -732,8 +735,8 @@ body.dashboard-page::after {
 .header-action--buy { padding: 13px 19px !important; border-radius: 14px !important; font-family: "Space Grotesk", sans-serif; font-weight: 700; }
 
 .welcome-banner {
-  min-height: 455px !important;
-  padding: 54px 56px 0 !important;
+  min-height: 370px !important;
+  padding: 40px 46px 0 !important;
   overflow: hidden;
   position: relative;
   isolation: isolate;
@@ -753,31 +756,31 @@ body.dashboard-page::after {
   box-shadow: 0 0 0 30px rgba(255,255,255,.025), 0 0 0 60px rgba(255,255,255,.02);
 }
 .welcome-copy { max-width: 720px; }
-.welcome-banner h1 { margin: 12px 0 18px !important; font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(52px, 8vw, 92px) !important; line-height: .96 !important; letter-spacing: -4px; }
-.welcome-description { max-width: 440px; font-size: 19px !important; line-height: 1.55; color: #c7cff1 !important; }
-.welcome-actions { margin-top: 32px !important; gap: 12px !important; }
+.welcome-banner h1 { margin: 12px 0 15px !important; font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(42px, 6vw, 68px) !important; line-height: .98 !important; letter-spacing: -3px; }
+.welcome-description { max-width: 440px; font-size: 17px !important; line-height: 1.5; color: #c7cff1 !important; }
+.welcome-actions { margin-top: 25px !important; gap: 10px !important; }
 .shortcut { padding: 13px 18px !important; font-family: "Space Grotesk", sans-serif; font-size: 13px !important; font-weight: 600; }
-.welcome-mark { width: 150px !important; height: 150px !important; top: 70px !important; right: 70px !important; border-radius: 44px !important; transform: rotate(8deg); font-family: "Space Grotesk", sans-serif; font-size: 28px !important; font-weight: 700; box-shadow: 0 25px 70px rgba(0,0,0,.28); }
-.welcome-foot { min-height: 58px !important; margin-top: 52px; font-size: 12px !important; }
+.welcome-mark { width: 112px !important; height: 112px !important; top: 54px !important; right: 54px !important; border-radius: 32px !important; transform: rotate(8deg); font-family: "Space Grotesk", sans-serif; font-size: 23px !important; font-weight: 700; box-shadow: 0 25px 70px rgba(0,0,0,.28); }
+.welcome-foot { min-height: 52px !important; margin-top: 36px; font-size: 12px !important; }
 
 .trust-strip { justify-content: flex-start; margin: 20px 0 42px !important; gap: 12px; }
 .trust-strip li { padding: 10px 15px; background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.12); }
 .surface { border-radius: 26px !important; }
-.section-heading h2 { font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(28px, 4vw, 44px) !important; letter-spacing: -1.5px; }
-.network-surface, .live-updates, .reviews-surface { padding: 34px !important; }
-.network-grid { gap: 16px !important; }
-.network-tile { min-height: 190px !important; padding: 25px !important; border-radius: 22px !important; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.section-heading h2 { font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(24px, 3vw, 34px) !important; letter-spacing: -1px; }
+.network-surface, .live-updates, .reviews-surface { padding: 27px !important; }
+.network-grid { gap: 13px !important; }
+.network-tile { min-height: 145px !important; padding: 19px !important; border-radius: 18px !important; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
 .network-tile:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.32); box-shadow: 0 18px 40px rgba(0,0,0,.25); }
-.network-symbol { font-family: "Space Grotesk", sans-serif; font-size: 28px !important; font-weight: 700; }
-.network-name { font-size: 23px !important; font-weight: 700; }
+.network-symbol { font-family: "Space Grotesk", sans-serif; font-size: 23px !important; font-weight: 700; }
+.network-name { font-size: 18px !important; font-weight: 700; }
 .live-updates { margin-top: 22px; }
 .site-update { border-radius: 16px !important; background: rgba(255,255,255,.055) !important; }
 .site-update strong { font-family: "Space Grotesk", sans-serif; font-size: 16px; }
 
 @media (max-width: 700px) {
   .dashboard-shell { padding-top: 18px; }
-  .welcome-banner { min-height: 470px !important; padding: 34px 23px 0 !important; border-radius: 24px !important; }
-  .welcome-banner h1 { font-size: clamp(44px, 15vw, 68px) !important; letter-spacing: -3px; }
+  .welcome-banner { min-height: 390px !important; padding: 30px 23px 0 !important; border-radius: 24px !important; }
+  .welcome-banner h1 { font-size: clamp(38px, 12vw, 56px) !important; letter-spacing: -2px; }
   .welcome-description { font-size: 16px !important; }
   .welcome-mark { width: 84px !important; height: 84px !important; top: 28px !important; right: 24px !important; font-size: 18px !important; border-radius: 24px !important; }
   .welcome-foot { margin-top: 42px; }
@@ -785,3 +788,14 @@ body.dashboard-page::after {
   .trust-strip li { flex: 1 1 calc(50% - 12px); justify-content: center; }
   .network-surface, .live-updates, .reviews-surface { padding: 23px !important; }
 }
+
+/* Consistent network identity wherever a network label is rendered. */
+.network-mtn, [data-network="mtn"] { color: var(--network-mtn) !important; }
+.network-telecel, [data-network="telecel"] { color: #ff6670 !important; }
+.network-airteltigo, [data-network="airteltigo"] { color: #61adff !important; }
+.network-mtn.network-chip, [data-network="mtn"].network-chip { background: rgba(255, 202, 0, .16); border-color: rgba(255, 202, 0, .35); }
+.network-telecel.network-chip, [data-network="telecel"].network-chip { background: rgba(229, 30, 42, .16); border-color: rgba(229, 30, 42, .35); }
+.network-airteltigo.network-chip, [data-network="airteltigo"].network-chip { background: rgba(20, 112, 200, .18); border-color: rgba(20, 112, 200, .4); }
+.network-mtn.network-symbol { background: var(--network-mtn) !important; color: #151515 !important; }
+.network-telecel.network-symbol { background: var(--network-telecel) !important; color: #fff !important; }
+.network-airteltigo.network-symbol { background: var(--network-airteltigo) !important; color: #fff !important; }

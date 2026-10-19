@@ -52,7 +52,9 @@ async function run() {
   } else {
     receiptStatus.textContent = "Not sent";
   }
-  document.getElementById("network").textContent = order.networkName;
+  const networkLabel = document.getElementById("network");
+  networkLabel.textContent = order.networkName;
+  networkLabel.dataset.network = order.network;
   document.getElementById("bundle").textContent = `${order.size} · GHS ${order.priceGhs}`;
   document.getElementById("phone").textContent = order.phone;
   document.getElementById("eta").textContent = order.delivery?.estimatedDeliveryAt 
