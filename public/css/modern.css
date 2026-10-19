@@ -695,3 +695,93 @@ footer {
   .trust-strip li { font-size: 11px; padding: 7px 11px; }
   .dashboard-brand .brand-logo { width: 30px; height: 30px; min-width: 30px; flex: 0 0 30px; }
 }
+
+/* ---------- Homepage refresh: bold type, editorial spacing, live product feel ---------- */
+body.dashboard-page {
+  position: relative;
+  overflow-x: hidden;
+  background-color: #080a18 !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+    radial-gradient(900px 620px at 78% -8%, rgba(126, 92, 255, .32), transparent 62%),
+    radial-gradient(760px 520px at -12% 55%, rgba(0, 217, 255, .16), transparent 64%),
+    linear-gradient(145deg, #080a18 0%, #101638 58%, #100d28 100%) !important;
+  background-size: 52px 52px, 52px 52px, auto, auto, auto;
+}
+
+body.dashboard-page::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  width: 360px;
+  height: 360px;
+  right: -160px;
+  top: 42%;
+  border-radius: 50%;
+  background: rgba(0, 217, 255, .12);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.dashboard-header { position: sticky; top: 0; z-index: 20; background: rgba(8,10,24,.72) !important; }
+.dashboard-header__inner { min-height: 78px; }
+.dashboard-shell { max-width: 1240px; padding-top: 34px; padding-bottom: 90px; }
+.dashboard-brand .brand-logo { filter: drop-shadow(0 0 20px rgba(0,217,255,.25)); }
+.dashboard-nav a { font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: 13px; font-weight: 600; }
+.header-action--buy { padding: 13px 19px !important; border-radius: 14px !important; font-family: "Space Grotesk", sans-serif; font-weight: 700; }
+
+.welcome-banner {
+  min-height: 455px !important;
+  padding: 54px 56px 0 !important;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  border-radius: 32px !important;
+  background: linear-gradient(120deg, rgba(31,35,91,.97), rgba(18,22,61,.96) 55%, rgba(31,13,75,.97)) !important;
+}
+.welcome-banner::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 520px;
+  height: 520px;
+  right: -100px;
+  top: -180px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 30px rgba(255,255,255,.025), 0 0 0 60px rgba(255,255,255,.02);
+}
+.welcome-copy { max-width: 720px; }
+.welcome-banner h1 { margin: 12px 0 18px !important; font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(52px, 8vw, 92px) !important; line-height: .96 !important; letter-spacing: -4px; }
+.welcome-description { max-width: 440px; font-size: 19px !important; line-height: 1.55; color: #c7cff1 !important; }
+.welcome-actions { margin-top: 32px !important; gap: 12px !important; }
+.shortcut { padding: 13px 18px !important; font-family: "Space Grotesk", sans-serif; font-size: 13px !important; font-weight: 600; }
+.welcome-mark { width: 150px !important; height: 150px !important; top: 70px !important; right: 70px !important; border-radius: 44px !important; transform: rotate(8deg); font-family: "Space Grotesk", sans-serif; font-size: 28px !important; font-weight: 700; box-shadow: 0 25px 70px rgba(0,0,0,.28); }
+.welcome-foot { min-height: 58px !important; margin-top: 52px; font-size: 12px !important; }
+
+.trust-strip { justify-content: flex-start; margin: 20px 0 42px !important; gap: 12px; }
+.trust-strip li { padding: 10px 15px; background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.12); }
+.surface { border-radius: 26px !important; }
+.section-heading h2 { font-family: "Space Grotesk", "DM Sans", sans-serif; font-size: clamp(28px, 4vw, 44px) !important; letter-spacing: -1.5px; }
+.network-surface, .live-updates, .reviews-surface { padding: 34px !important; }
+.network-grid { gap: 16px !important; }
+.network-tile { min-height: 190px !important; padding: 25px !important; border-radius: 22px !important; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.network-tile:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.32); box-shadow: 0 18px 40px rgba(0,0,0,.25); }
+.network-symbol { font-family: "Space Grotesk", sans-serif; font-size: 28px !important; font-weight: 700; }
+.network-name { font-size: 23px !important; font-weight: 700; }
+.live-updates { margin-top: 22px; }
+.site-update { border-radius: 16px !important; background: rgba(255,255,255,.055) !important; }
+.site-update strong { font-family: "Space Grotesk", sans-serif; font-size: 16px; }
+
+@media (max-width: 700px) {
+  .dashboard-shell { padding-top: 18px; }
+  .welcome-banner { min-height: 470px !important; padding: 34px 23px 0 !important; border-radius: 24px !important; }
+  .welcome-banner h1 { font-size: clamp(44px, 15vw, 68px) !important; letter-spacing: -3px; }
+  .welcome-description { font-size: 16px !important; }
+  .welcome-mark { width: 84px !important; height: 84px !important; top: 28px !important; right: 24px !important; font-size: 18px !important; border-radius: 24px !important; }
+  .welcome-foot { margin-top: 42px; }
+  .trust-strip { margin-bottom: 28px !important; }
+  .trust-strip li { flex: 1 1 calc(50% - 12px); justify-content: center; }
+  .network-surface, .live-updates, .reviews-surface { padding: 23px !important; }
+}
