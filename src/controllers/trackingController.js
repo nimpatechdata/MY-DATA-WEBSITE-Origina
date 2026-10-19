@@ -12,6 +12,10 @@ function toArray(payload) {
   for (const key of ["data", "orders", "transactions", "results"]) {
     if (Array.isArray(payload?.[key])) return payload[key];
   }
+  const providerData = payload?.data || payload;
+  const current = providerData?.yourOrders?.inCurrentBatch || [];
+  const last = providerData?.yourOrders?.inLastDeliveredBatch || [];
+  if (Array.isArray(current) || Array.isArray(last)) return [...current, ...last];
   return [];
 }
 
@@ -81,7 +85,22 @@ async function getTracking(_req, res) {
       }
     });
     const items = normalizeItems(payload);
-    return res.json({ metrics: summarize(items), items, refreshedAt: new Date().toISOString() });
+    const providerData = payload?.data || payload;
+    const providerStats = providerData?.stats || {};
+    const metrics = Object.keys(providerStats).length ? {
+      total: Number(providerStats.checked || 0),
+      successful: Number(providerStats.delivered || 0),
+      pending: Number(providerStats.pending || 0) + Number(providerStats.partial || 0),
+      failed: Number(providerStats.failed || 0)
+    } : summarize(items);
+    return res.json({
+      metrics,
+      items,
+      scanner: providerData?.scanner || null,
+      checkingNow: providerData?.checkingNow || null,
+      lastDelivered: providerData?.lastDelivered || null,
+      refreshedAt: new Date().toISOString()
+    });
   } catch (error) {
     const timedOut = error.name === "AbortError";
     console.error("Datamart tracking proxy failed:", error.message);
