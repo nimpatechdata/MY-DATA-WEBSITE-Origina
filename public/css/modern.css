@@ -375,6 +375,21 @@ input:focus {
   color: #7d89b5 !important;
 }
 
+.site-footer__links a.site-footer__channel,
+.site-footer__links a.site-footer__whatsapp {
+  font-size: 16px !important;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+.site-footer__links a.site-footer__channel {
+  color: #70d8ff !important;
+}
+
+.site-footer__links a.site-footer__whatsapp {
+  color: #62e39c !important;
+}
+
 /* ---------- Support widget ---------- */
 .support-launcher,
 .support-panel {

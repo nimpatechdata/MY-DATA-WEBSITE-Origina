@@ -58,7 +58,7 @@
   footer.classList.add("site-footer");
   footer.innerHTML = `
     <nav class="site-footer__links" aria-label="Helpful links">
-      <a href="https://whatsapp.com/channel/0029VbDe7YwIHphPAs75Yk0y" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a>
+      <a class="site-footer__channel" href="https://whatsapp.com/channel/0029VbDe7YwIHphPAs75Yk0y" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a>
       <a class="site-footer__whatsapp" href="https://wa.me/233533323096" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       <a href="#support-widget" data-open-support>Contact</a>
       <a href="/#live-updates">Live Updates</a>
