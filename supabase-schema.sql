@@ -64,6 +64,7 @@ create table if not exists public.agent_profiles (
   membership_status text not null default 'pending'
     check (membership_status in ('pending', 'active', 'suspended')),
   wallet_balance numeric(12, 2) not null default 0 check (wallet_balance >= 0),
+  referral_credits integer default 5,
   created_at timestamptz not null default now()
 );
 

@@ -199,49 +199,17 @@ const enroll = safeHandler(async (req, res) => {
   });
   if (userError) throw httpError(userError.message, 400);
 
-  const userId = userData.user.id;
   const { error: profileError } = await admin.from("agent_profiles").insert({
-    user_id: userId,
+    user_id: userData.user.id,
     full_name: String(fullName).trim(),
     phone: normalizedPhone,
-    membership_status: "pending"
+    membership_status: "pending",
+    referral_credits: 5
   });
-  if (profileError) {
-    await admin.auth.admin.deleteUser(userId);
-    throw profileError;
-  }
+  if (profileError) throw httpError("Could not create agent profile.", 500);
 
-  const reference = `join_${crypto.randomUUID()}`;
-  const { error: membershipError } = await admin.from("agent_membership_payments").insert({
-    user_id: userId,
-    paystack_reference: reference,
-    amount: MEMBERSHIP_FEE_GHS,
-    status: "pending"
-  });
-  if (membershipError) {
-    await admin.from("agent_profiles").delete().eq("user_id", userId);
-    await admin.auth.admin.deleteUser(userId);
-    throw membershipError;
-  }
-
-  let payment;
-  try {
-    payment = await paymentService.initializePayment({
-      id: reference,
-      email: String(email).trim().toLowerCase(),
-      priceGhs: MEMBERSHIP_FEE_GHS,
-      callbackUrl: makeCallbackUrl("/agent-membership-success.html", { reference }),
-      metadata: { purpose: "sub_agent_membership", userId }
-    });
-  } catch (error) {
-    await admin.from("agent_membership_payments").delete().eq("paystack_reference", reference);
-    await admin.from("agent_profiles").delete().eq("user_id", userId);
-    await admin.auth.admin.deleteUser(userId);
-    throw error;
-  }
-  if (payment.demo) throw httpError("Live Paystack checkout is required to activate an agent account.", 503);
-
-  res.status(201).json({ authorizationUrl: payment.authorizationUrl, reference });
+  const { authorization_url } = await paymentService.initializeMembership(userData.user.id, email, normalizedPhone);
+  return res.json({ authorization_url });
 }, "Could not start sub-agent registration.");
 
 const confirmMembership = safeHandler(async (req, res) => {
