@@ -52,7 +52,7 @@ function renderNetworks() {
   });
 }
 
-function renderBundles() {
+function renderOldBundles() {
   const network = state.catalog.networks.find((item) => item.id === state.network);
   const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
@@ -116,7 +116,7 @@ function renderAllBundles() {
   });
 }
 
-function renderFixedColumnBundles() {
+function renderBundles() {
   const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
   heading.textContent = "2. Choose a bundle";
