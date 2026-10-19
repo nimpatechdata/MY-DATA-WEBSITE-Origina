@@ -411,6 +411,14 @@ input:focus {
 }
 
 .mtn-picks { margin-top: 20px; }
+.header-action--network { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; padding: 8px 10px; border: 1px solid rgba(255, 224, 102, .6); border-radius: 10px; background: #ffe066; color: #11172b !important; font-size: 11px; font-weight: 900; letter-spacing: .04em; }
+.welcome-actions .shortcut--network { display: inline-flex; align-items: center; gap: 7px; border-color: rgba(255,255,255,.14); }
+.welcome-actions .shortcut--network span { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 7px; background: #ffe066; color: #11172b; font-size: 9px; font-weight: 900; }
+.welcome-actions .shortcut--mtn { border-color: rgba(255,224,102,.55); }
+.welcome-actions .shortcut--airteltigo { border-color: rgba(82,160,255,.55); }
+.welcome-actions .shortcut--airteltigo span { background: #4598ff; color: #fff; }
+.welcome-actions .shortcut--telecel { border-color: rgba(255,102,102,.55); }
+.welcome-actions .shortcut--telecel span { background: #ff6868; color: #fff; }
 .mtn-picks .section-heading { align-items: flex-start; }
 .mtn-picks .section-subtitle { max-width: 560px; margin: 8px 0 0; color: var(--mod-muted); font-size: 15px; line-height: 1.5; }
 .mtn-picks__badge { padding: 8px 12px; border: 1px solid rgba(255, 224, 102, .35); border-radius: 999px; background: rgba(255, 224, 102, .1); color: #ffe066; font-size: 12px; font-weight: 800; white-space: nowrap; }
