@@ -45,6 +45,9 @@ async function run() {
   document.getElementById("network").textContent = order.networkName;
   document.getElementById("bundle").textContent = `${order.size} · GHS ${order.priceGhs}`;
   document.getElementById("phone").textContent = order.phone;
+  document.getElementById("eta").textContent = order.delivery?.estimatedDeliveryAt 
+    ? new Date(order.delivery.estimatedDeliveryAt).toLocaleTimeString("en-GH", { hour: '2-digit', minute: '2-digit' }) 
+    : "Processing...";
 
   if (order.status === "delivered") {
     document.getElementById("title").textContent = "Data sent";
