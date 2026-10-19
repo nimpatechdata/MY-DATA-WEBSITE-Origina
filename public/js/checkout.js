@@ -52,7 +52,7 @@ function renderNetworks() {
   });
 }
 
-function renderBundles() {
+function renderSingleBundles() {
   const network = state.catalog.networks.find((item) => item.id === state.network);
   const recipientDetails = document.querySelector(".recipient-details");
   const heading = document.getElementById("bundle-heading");
@@ -114,6 +114,49 @@ function renderAllBundles() {
     group.appendChild(choices);
     bundleBox.appendChild(group);
   });
+}
+
+function renderBundles() {
+  const recipientDetails = document.querySelector(".recipient-details");
+  const heading = document.getElementById("bundle-heading");
+  heading.textContent = "2. Choose a bundle";
+  heading.className = "bundle-heading";
+  heading.removeAttribute("data-network");
+  bundleBox.innerHTML = "";
+
+  const columns = document.createElement("div");
+  columns.className = "network-bundle-columns";
+  state.catalog.networks.forEach((network) => {
+    const column = document.createElement("section");
+    column.className = `network-bundle-column network-bundle-column--${network.id} ${network.id === state.network ? "is-selected" : ""}`;
+    column.innerHTML = `<div class="network-bundle-column__heading"><h3>${network.name}</h3><span>${network.id === state.network ? "Selected" : "Choose above"}</span></div>`;
+
+    if (network.id === state.network) {
+      const choices = document.createElement("div");
+      choices.className = "choices network-bundle-column__choices";
+      (state.catalog.bundles[network.id] || []).forEach((bundle) => {
+        const option = document.createElement("div");
+        option.className = `bundle-option ${state.bundleId === bundle.id ? "selected" : ""}`;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `bundle ${state.bundleId === bundle.id ? "active" : ""}`;
+        button.innerHTML = `<strong>${bundle.size}</strong><small>GHS ${bundle.priceGhs} · ${bundle.validity}</small>`;
+        button.addEventListener("click", () => {
+          state.bundleId = bundle.id;
+          renderBundles();
+          renderSummary();
+        });
+        option.appendChild(button);
+        if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
+        choices.appendChild(option);
+      });
+      column.appendChild(choices);
+    } else {
+      column.insertAdjacentHTML("beforeend", `<p class="network-bundle-column__hint">Select ${network.name} above to view bundles here.</p>`);
+    }
+    columns.appendChild(column);
+  });
+  bundleBox.appendChild(columns);
 }
 
 async function loadCatalog() {
