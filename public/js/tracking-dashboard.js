@@ -47,3 +47,12 @@
   setInterval(() => { if (!dashboard.hidden && trackingItems.some((item) => item.status === "pending")) renderItems(); }, 1_000);
   setInterval(() => { if (!dashboard.hidden) loadTracking(); }, 45_000);
 })();
+
+// Keep provider network labels visually consistent even when the API returns them dynamically.
+const colorizeTrackingNetworks = () => document.querySelectorAll(".tracking-table td").forEach((cell) => {
+  const value = cell.textContent.trim().toLowerCase();
+  const network = value.includes("airteltigo") ? "airteltigo" : value.includes("telecel") ? "telecel" : value === "mtn" ? "mtn" : "";
+  if (network) cell.classList.add(`network-${network}`);
+});
+new MutationObserver(colorizeTrackingNetworks).observe(document.body, { childList: true, subtree: true });
+colorizeTrackingNetworks();

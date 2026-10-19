@@ -54,6 +54,15 @@ async function loadOrders() {
 }
 document.getElementById("password-form").addEventListener("submit", async (event) => { event.preventDefault(); const message = document.getElementById("password-error"); const newPassword = document.getElementById("new-password").value; if (newPassword !== document.getElementById("confirm-password").value) { message.textContent = "New passwords do not match."; return; } const response = await fetch("/api/admin/password", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword: document.getElementById("current-password").value, newPassword }) }); const result = await response.json(); message.textContent = response.ok ? "Password updated successfully." : result.error || "Could not update password."; if (response.ok) event.target.reset(); });
 setInterval(() => { if (!dashboard.hidden) loadOrders().catch((error) => { dashboardError.textContent = error.message; }); }, 30000);
+
+// Apply the same MTN/Telecel/AirtelTigo identity to dynamically loaded admin rows.
+const colorizeAdminNetworks = () => document.querySelectorAll("#orders-body td, .price-editor strong").forEach((element) => {
+  const value = element.textContent.trim().toLowerCase();
+  const network = value.includes("airteltigo") ? "airteltigo" : value.includes("telecel") ? "telecel" : value.startsWith("mtn") ? "mtn" : "";
+  if (network) element.classList.add(`network-${network}`);
+});
+new MutationObserver(colorizeAdminNetworks).observe(document.body, { childList: true, subtree: true });
+colorizeAdminNetworks();
 const forgotPanel = document.getElementById("forgot-panel");
 const resetPanel = document.getElementById("reset-panel");
 const resetToken = new URLSearchParams(window.location.search).get("reset");
