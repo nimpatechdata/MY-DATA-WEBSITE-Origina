@@ -761,6 +761,11 @@ body.dashboard-page::after {
 .welcome-actions { margin-top: 25px !important; gap: 10px !important; }
 .shortcut { padding: 13px 18px !important; font-family: "Space Grotesk", sans-serif; font-size: 13px !important; font-weight: 600; }
 .welcome-mark { width: 112px !important; height: 112px !important; top: 54px !important; right: 54px !important; border-radius: 32px !important; transform: rotate(8deg); font-family: "Space Grotesk", sans-serif; font-size: 23px !important; font-weight: 700; box-shadow: 0 25px 70px rgba(0,0,0,.28); }
+.welcome-visual { position: absolute; z-index: 0; right: 34px; top: 34px; width: min(43%, 470px); margin: 0; padding: 10px; border: 1px solid rgba(255,255,255,.16); border-radius: 24px; background: rgba(255,255,255,.07); box-shadow: 0 24px 70px rgba(0,0,0,.3); transform: rotate(2deg); overflow: hidden; }
+.welcome-visual::after { content: ""; position: absolute; inset: 10px; border-radius: 17px; background: linear-gradient(90deg, rgba(15,18,58,.35), transparent 50%); pointer-events: none; }
+.welcome-visual img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 17px; }
+.welcome-visual figcaption { position: relative; z-index: 1; display: flex; align-items: center; gap: 7px; margin: 9px 3px 0; color: #dbe2ff; font-size: 11px; font-weight: 700; }
+.welcome-visual .status-dot { width: 7px; height: 7px; }
 .welcome-foot { min-height: 52px !important; margin-top: 36px; font-size: 12px !important; }
 
 .trust-strip { justify-content: flex-start; margin: 20px 0 42px !important; gap: 12px; }
@@ -783,6 +788,10 @@ body.dashboard-page::after {
   .welcome-banner h1 { font-size: clamp(38px, 12vw, 56px) !important; letter-spacing: -2px; }
   .welcome-description { font-size: 16px !important; }
   .welcome-mark { width: 84px !important; height: 84px !important; top: 28px !important; right: 24px !important; font-size: 18px !important; border-radius: 24px !important; }
+  .welcome-visual { right: 18px; top: 22px; width: 41%; padding: 6px; border-radius: 15px; transform: rotate(1deg); }
+  .welcome-visual img { border-radius: 11px; }
+  .welcome-visual::after { inset: 6px; border-radius: 11px; }
+  .welcome-visual figcaption { display: none; }
   .welcome-foot { margin-top: 42px; }
   .trust-strip { margin-bottom: 28px !important; }
   .trust-strip li { flex: 1 1 calc(50% - 12px); justify-content: center; }
