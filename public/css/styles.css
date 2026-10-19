@@ -269,11 +269,22 @@ label {
   gap: 10px;
 }
 
+.bundle-heading {
+  margin: 22px 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+#bundle-choices {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .bundle-option { display: grid; gap: 10px; }
 .bundle-option.selected { padding: 8px; border: 2px solid var(--green); border-radius: 18px; background: color-mix(in srgb, var(--card) 94%, var(--green)); }
 .bundle-option.selected .bundle { border-color: var(--green); }
 .recipient-details { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--card) 92%, var(--green)); }
-.bundle-option .recipient-details { margin-top: 0; }
 .recipient-details .primary { width: 100%; margin-top: 8px; }
 .selection-hint { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
 .selection-hint strong { color: var(--text); }
@@ -333,6 +344,8 @@ code { font-size: 11px; color: var(--muted); }
 .price-message { color: var(--muted); min-height: 15px; }
 
 @media (max-width: 620px) { .theme-switcher { position: static; margin: 10px 16px 0 auto; width: fit-content; } .admin-heading { align-items: start; flex-direction: column; } }
+
+@media (max-width: 620px) { #bundle-choices { grid-template-columns: 1fr; } }
 
 .choice,
 .bundle {

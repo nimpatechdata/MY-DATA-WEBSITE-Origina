@@ -52,7 +52,11 @@ function renderNetworks() {
 }
 
 function renderBundles() {
-  const recipientDetails = document.querySelector(".recipient-details");
+  const network = state.catalog.networks.find((item) => item.id === state.network);
+  const heading = document.getElementById("bundle-heading");
+  heading.textContent = `${network?.name || "Selected network"} bundles`;
+  heading.className = `bundle-heading network-${state.network}`;
+  heading.dataset.network = state.network;
   bundleBox.innerHTML = "";
   state.catalog.bundles[state.network].forEach((bundle) => {
     const option = document.createElement("div");
@@ -67,7 +71,6 @@ function renderBundles() {
       renderSummary();
     });
     option.appendChild(button);
-    if (state.bundleId === bundle.id) option.appendChild(recipientDetails);
     bundleBox.appendChild(option);
   });
 }
