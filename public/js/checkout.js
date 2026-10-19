@@ -4,6 +4,7 @@ const state = {
   bundleId: null
 };
 const requestedNetwork = new URLSearchParams(window.location.search).get("network");
+const requestedBundle = new URLSearchParams(window.location.search).get("bundle");
 
 const networkBox = document.getElementById("network-choices");
 const bundleBox = document.getElementById("bundle-choices");
@@ -83,7 +84,10 @@ async function loadCatalog() {
   if (requestedNetwork && state.catalog.bundles[requestedNetwork]) {
     state.network = requestedNetwork;
   }
-  state.bundleId = state.catalog.bundles[state.network][0].id;
+  const availableBundles = state.catalog.bundles[state.network] || [];
+  state.bundleId = availableBundles.some((bundle) => bundle.id === requestedBundle)
+    ? requestedBundle
+    : availableBundles[0]?.id;
   renderNetworks();
   renderBundles();
   renderSummary();
