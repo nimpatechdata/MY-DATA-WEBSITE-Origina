@@ -54,7 +54,7 @@ function renderNetworks() {
 function renderBundles() {
   const network = state.catalog.networks.find((item) => item.id === state.network);
   const heading = document.getElementById("bundle-heading");
-  heading.textContent = `${network?.name || "Selected network"} bundles`;
+  heading.textContent = `2. ${network?.name || "Selected network"} bundles`;
   heading.className = `bundle-heading network-${state.network}`;
   heading.dataset.network = state.network;
   bundleBox.innerHTML = "";

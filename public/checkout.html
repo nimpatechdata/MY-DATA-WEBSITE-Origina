@@ -26,12 +26,14 @@
 
       <section class="checkout">
         <form class="panel" id="checkout-form">
-          <label>Network</label>
+          <div class="checkout-selection">
+          <p class="checkout-step">1. Choose a network</p>
           <div class="choices" id="network-choices"></div>
 
           <div class="bundle-heading" id="bundle-heading" aria-live="polite"></div>
           <div class="choices" id="bundle-choices"></div>
           <div class="recipient-details" aria-live="polite">
+            <p class="checkout-step">3. Enter customer details</p>
             <p class="selection-hint">Selected bundle: <strong id="selected-bundle-label">—</strong></p>
             <label for="phone">Recipient phone number</label>
             <input id="phone" name="phone" inputmode="tel" placeholder="0241234567" maxlength="13" required />
@@ -41,6 +43,7 @@
 
             <p class="error" id="error"></p>
             <button class="primary" type="submit" id="pay-btn">Continue to payment</button>
+          </div>
           </div>
         </form>
 
