@@ -459,6 +459,18 @@ input:focus {
 .network-bundle-column__choices .bundle-option.selected .recipient-details input { min-height: 36px; padding: 8px 10px; font-size: 13px; }
 .network-bundle-column__choices .bundle-option.selected .recipient-details .primary { padding: 10px 12px; font-size: 13px; }
 .network-bundle-column__hint { margin: 28px 0 0; color: var(--mod-muted); font-size: 13px; line-height: 1.45; }
+.network-bundle-column--mtn { border-color: rgba(255,202,0,.72); background: linear-gradient(160deg, rgba(255,202,0,.18), rgba(255,202,0,.045)); }
+.network-bundle-column--telecel { border-color: rgba(229,30,42,.72); background: linear-gradient(160deg, rgba(229,30,42,.18), rgba(229,30,42,.045)); }
+.network-bundle-column--airteltigo { border-color: rgba(20,112,200,.72); background: linear-gradient(160deg, rgba(20,112,200,.2), rgba(20,112,200,.05)); }
+.network-bundle-column--mtn .network-bundle-column__heading h3 { color: #ffdf3d; }
+.network-bundle-column--telecel .network-bundle-column__heading h3 { color: #ff6973; }
+.network-bundle-column--airteltigo .network-bundle-column__heading h3 { color: #61adff; }
+.network-bundle-column--mtn .bundle { border-color: rgba(255,202,0,.5) !important; background: rgba(255,202,0,.13) !important; }
+.network-bundle-column--telecel .bundle { border-color: rgba(229,30,42,.5) !important; background: rgba(229,30,42,.13) !important; }
+.network-bundle-column--airteltigo .bundle { border-color: rgba(20,112,200,.55) !important; background: rgba(20,112,200,.15) !important; }
+.network-bundle-column--mtn .bundle.active, .network-bundle-column--mtn .bundle-option.selected { border-color: #ffca00 !important; box-shadow: 0 0 0 3px rgba(255,202,0,.24) !important; }
+.network-bundle-column--telecel .bundle.active, .network-bundle-column--telecel .bundle-option.selected { border-color: #e51e2a !important; box-shadow: 0 0 0 3px rgba(229,30,42,.24) !important; }
+.network-bundle-column--airteltigo .bundle.active, .network-bundle-column--airteltigo .bundle-option.selected { border-color: #1470c8 !important; box-shadow: 0 0 0 3px rgba(20,112,200,.24) !important; }
 @media (max-width: 900px) { .network-bundle-columns { grid-template-columns: 1fr; } .network-bundle-column { min-height: 0; } }
 
 @media (max-width: 820px) {
