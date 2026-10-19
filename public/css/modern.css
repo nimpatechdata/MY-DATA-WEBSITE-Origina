@@ -451,7 +451,12 @@ input:focus {
 .network-bundle-column__heading span { color: var(--mod-muted); font-size: 11px; font-weight: 800; }
 .network-bundle-column__choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
 .network-bundle-column__choices .bundle-option { min-width: 0; }
+.network-bundle-column__choices .bundle-option.selected { grid-column: 1 / -1; width: min(100%, 290px); justify-self: start; padding: 6px; border-radius: 14px; }
 .network-bundle-column__choices .recipient-details { grid-column: 1 / -1; }
+.network-bundle-column__choices .bundle-option.selected .recipient-details { padding: 11px; border-radius: 12px; }
+.network-bundle-column__choices .bundle-option.selected .recipient-details label { font-size: 12px; }
+.network-bundle-column__choices .bundle-option.selected .recipient-details input { min-height: 36px; padding: 8px 10px; font-size: 13px; }
+.network-bundle-column__choices .bundle-option.selected .recipient-details .primary { padding: 10px 12px; font-size: 13px; }
 .network-bundle-column__hint { margin: 28px 0 0; color: var(--mod-muted); font-size: 13px; line-height: 1.45; }
 @media (max-width: 900px) { .network-bundle-columns { grid-template-columns: 1fr; } .network-bundle-column { min-height: 0; } }
 
